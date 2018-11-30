@@ -20,19 +20,22 @@ class OmnitrackerDatabase {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
     }
 
-    fun getFields(): List<Field> {
-        val folders = getFolders().associateBy { it.id }
+    val fields: Map<Int, Field> by lazy {
+        println("Lazy init Fields")
+        fetchFields()
+    }
 
+    private fun fetchFields(): Map<Int, Field> {
         DriverManager.getConnection(config[db_connection_string]).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("SELECT id, area, label, remark, type, alias, subtype, max_size, refobj_key FROM [UserFieldDef]")
 
-            val fields = mutableListOf<Field>()
+            val fields = hashMapOf<Int, Field>()
 
             while (resultSet.next()) {
                 val id = resultSet.getInt("id")
                 val folderId = resultSet.getInt("area")
-                val folder = folders.getValue(folderId)
+                //val folder = folders.getValue(folderId)
                 val label = resultSet.getString("label")
                 val remark = resultSet.getString("remark")
                 val type = resultSet.getInt("type")
@@ -43,7 +46,7 @@ class OmnitrackerDatabase {
 
                 val field = Field(
                         id,
-                        folder,
+                        folderId,
                         label,
                         remark,
                         type,
@@ -51,35 +54,38 @@ class OmnitrackerDatabase {
                         subtype,
                         maxSize,
                         referenceFolderId,
-                        folders
-                        )
+                        lazy { folders },
+                        lazy { stringTranslations }
+                )
 
-                fields.add(field)
+                fields[id] = field
             }
 
             return fields
         }
     }
 
-    fun getStringTranslations(): List<StringTranslation> {
-        val folders = getFolders().associateBy { it.id }
-        val fields = getFields().associateBy { it.id }
+    val stringTranslations: Map<Int, StringTranslation> by lazy {
+        println("Lazy init StringTranslations")
+        fetchStringTranslations()
+    }
 
+    private fun fetchStringTranslations(): Map<Int, StringTranslation> {
         DriverManager.getConnection(config[db_connection_string]).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [StringTranslations]")
 
-            val stringTranslations = mutableListOf<StringTranslation>()
+            val stringTranslations = hashMapOf<Int, StringTranslation>()
 
             while (resultSet.next()) {
                 val id = resultSet.getInt("id")
                 val guid = resultSet.getString("str_guid")
                 val type = resultSet.getInt("type")
-                val ref = resultSet.getInt("ref")
+                val fieldId = resultSet.getInt("ref")
                 //val field = resultSet.getInt("field")
-                val field = fields[ref]
+                //val field = fields[fieldId]
                 val folderId = resultSet.getInt("folder")
-                val folder = folders[folderId]
+                //val folder = folders[folderId]
                 val langCode = resultSet.getString("langcode")
                 val text = resultSet.getString("txt") ?: null
                 val untranslated = resultSet.getBoolean("untranslated")
@@ -87,24 +93,29 @@ class OmnitrackerDatabase {
                 val stringTranslation = StringTranslation(
                         id,
                         guid,
-                        folder,
+                        folderId,
+                        lazy { folders },
                         langCode,
                         text,
                         untranslated,
                         type,
-                        field
+                        lazy { fields },
+                        fieldId
                 )
 
-                stringTranslations.add(stringTranslation)
+                stringTranslations[id] = stringTranslation
             }
 
             return stringTranslations
         }
     }
 
-    fun getScripts(): List<Script> {
-        val folders = getFolders().associateBy { it.id }
+    val scripts: List<Script> by lazy {
+        println("Lazy init Scripts")
+        fetchScripts()
+    }
 
+    private fun fetchScripts(): List<Script> {
         DriverManager.getConnection(config[db_connection_string]).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("SELECT id, folder, type, name, script FROM [Scripts]")
@@ -114,14 +125,15 @@ class OmnitrackerDatabase {
             while (resultSet.next()) {
                 val id = resultSet.getInt("id")
                 val folderId = resultSet.getInt("folder")
-                val folder = folders[folderId]
+                //val folder = folders[folderId]
                 val type = resultSet.getInt("type")
                 val name = resultSet.getString("name")
                 val content = resultSet.getString("script")
 
                 val script = Script(
                         id,
-                        folder,
+                        folderId,
+                        lazy { folders },
                         type,
                         name,
                         content)
@@ -133,7 +145,12 @@ class OmnitrackerDatabase {
         }
     }
 
-    fun getFolders(): List<Folder> {
+    val folders: Map<Int, Folder> by lazy {
+        println("Lazy init Folders")
+        fetchFolders()
+    }
+
+    fun fetchFolders(): Map<Int, Folder> {
         DriverManager.getConnection(config[db_connection_string]).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("SELECT id, name, parent, term_singular, term_plural, alias FROM [ProblemArea]")
@@ -155,7 +172,7 @@ class OmnitrackerDatabase {
                         singularTerm,
                         pluralTerm,
                         alias,
-                        folders
+                        lazy { folders }
                 )
 
                 folders[folder.id] = folder
@@ -163,7 +180,7 @@ class OmnitrackerDatabase {
 
             // populate fields
 
-            return folders.map { it.value }
+            return folders
         }
     }
 }

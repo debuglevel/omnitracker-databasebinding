@@ -20,7 +20,7 @@ plugins {
 }
 
 group 'de.debuglevel.omnitrackerdatabasebinding'
-version '0.0.1-SNAPSHOT'
+version '0.0.2-SNAPSHOT'
 
 // start task "shadowJar" on "build" (the other subprojects do not need this, as "shadowJar" is triggered when "application" is present)
 tasks.build.dependsOn tasks.shadowJar

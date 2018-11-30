@@ -1,22 +1,20 @@
 package de.debuglevel.omnitrackerdatabasebinding.models
 
-import kotlin.jvm.internal.Intrinsics
-
 data class Folder(val id: Int,
                   val name: String,
-                  val parentId: Number,
+                  private val parentId: Number,
                   val singularTerm: String? = null,
                   val pluralTerm: String? = null,
                   val alias: String? = null,
-                  val folderMap: HashMap<Int, Folder>
+                  private val folderMap: Lazy<HashMap<Int, Folder>>
 )
 {
     val fields = listOf<Field>()
 
     val parentFolder: Folder?
-        get() = folderMap[this.parentId]
+        get() = folderMap.value[this.parentId]
 
-    override fun toString() = "$id: $name ($alias)"
+    override fun toString() = "$id: $name ($alias) [Parent: ${parentFolder?.alias}]"
 
     override fun hashCode() = this.id
 
@@ -25,7 +23,7 @@ data class Folder(val id: Int,
             other == null -> false
             this === other -> true
             other is Folder -> {
-                val o = other as Folder
+                val o = other
                 this.id == o.id &&
                         this.name == o.name &&
                         this.parentId == o.parentId &&

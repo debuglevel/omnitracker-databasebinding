@@ -1,13 +1,17 @@
 package de.debuglevel.omnitrackerdatabasebinding.models
 
 data class Script(val id: Int,
-                  val folder: Folder?,
+                  private val folderId: Int,
+                  private val folderMap: Lazy<Map<Int, Folder>>,
+        //val folder: Folder?,
                   val type: Int,
                   val name: String,
                   val content: String? /* database column "script" */
 )
 {
-    override fun toString() = "$id: $name"
+    val folder: Folder get() = folderMap.value.getValue(folderId)
+
+    override fun toString() = "$id (${folder.alias}): $name"
 
     override fun hashCode() = this.id
 }

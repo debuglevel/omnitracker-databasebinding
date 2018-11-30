@@ -18,6 +18,9 @@ data class Field(val id: Int,
         return FieldType.values().firstOrNull { it.id == typeId }
     }
 
+    /**
+     * If this field is a ReferenceTo
+     */
     val referenceFolder: Folder?
         get() = folderMap[this.referenceFolderId]
 

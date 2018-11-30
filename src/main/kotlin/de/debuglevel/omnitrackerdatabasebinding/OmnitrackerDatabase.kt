@@ -4,6 +4,7 @@ import com.natpryce.konfig.*
 import de.debuglevel.omnitrackerdatabasebinding.models.Field
 import de.debuglevel.omnitrackerdatabasebinding.models.Folder
 import de.debuglevel.omnitrackerdatabasebinding.models.Script
+import de.debuglevel.omnitrackerdatabasebinding.models.StringTranslation
 import java.io.File
 import java.sql.DriverManager
 
@@ -57,6 +58,47 @@ class OmnitrackerDatabase {
             }
 
             return fields
+        }
+    }
+
+    fun getStringTranslations(): List<StringTranslation> {
+        val folders = getFolders().associateBy { it.id }
+        val fields = getFields().associateBy { it.id }
+
+        DriverManager.getConnection(config[db_connection_string]).use { connection ->
+            val sqlStatement = connection.createStatement()
+            val resultSet = sqlStatement.executeQuery("SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [StringTranslations]")
+
+            val stringTranslations = mutableListOf<StringTranslation>()
+
+            while (resultSet.next()) {
+                val id = resultSet.getInt("id")
+                val guid = resultSet.getString("str_guid")
+                val type = resultSet.getInt("type")
+                val ref = resultSet.getInt("ref")
+                //val field = resultSet.getInt("field")
+                val field = fields[ref]
+                val folderId = resultSet.getInt("folder")
+                val folder = folders[folderId]
+                val langCode = resultSet.getString("langcode")
+                val text = resultSet.getString("txt") ?: null
+                val untranslated = resultSet.getBoolean("untranslated")
+
+                val stringTranslation = StringTranslation(
+                        id,
+                        guid,
+                        folder,
+                        langCode,
+                        text,
+                        untranslated,
+                        type,
+                        field
+                )
+
+                stringTranslations.add(stringTranslation)
+            }
+
+            return stringTranslations
         }
     }
 

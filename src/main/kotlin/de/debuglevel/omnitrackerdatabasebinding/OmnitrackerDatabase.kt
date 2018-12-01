@@ -1,32 +1,27 @@
 package de.debuglevel.omnitrackerdatabasebinding
 
-import com.natpryce.konfig.*
 import de.debuglevel.omnitrackerdatabasebinding.models.Field
 import de.debuglevel.omnitrackerdatabasebinding.models.Folder
 import de.debuglevel.omnitrackerdatabasebinding.models.Script
 import de.debuglevel.omnitrackerdatabasebinding.models.StringTranslation
-import java.io.File
+import mu.KotlinLogging
 import java.sql.DriverManager
 
 class OmnitrackerDatabase {
-    val db_connection_string by stringType
-
-    val config =
-            ConfigurationProperties.systemProperties() overriding
-            EnvironmentVariables() overriding
-            ConfigurationProperties.fromOptionalFile(File("configuration.properties"))
+    private val logger = KotlinLogging.logger {}
 
     init {
+        logger.debug { "Initialize OMNITRACKER DatabaseBinding..." }
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
     }
 
     val fields: Map<Int, Field> by lazy {
-        println("Lazy init Fields")
+        logger.debug("Lazy initialize fields...")
         fetchFields()
     }
 
     private fun fetchFields(): Map<Int, Field> {
-        DriverManager.getConnection(config[db_connection_string]).use { connection ->
+        DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("SELECT id, area, label, remark, type, alias, subtype, max_size, refobj_key FROM [UserFieldDef]")
 
@@ -35,7 +30,6 @@ class OmnitrackerDatabase {
             while (resultSet.next()) {
                 val id = resultSet.getInt("id")
                 val folderId = resultSet.getInt("area")
-                //val folder = folders.getValue(folderId)
                 val label = resultSet.getString("label")
                 val remark = resultSet.getString("remark")
                 val type = resultSet.getInt("type")
@@ -66,12 +60,12 @@ class OmnitrackerDatabase {
     }
 
     val stringTranslations: Map<Int, StringTranslation> by lazy {
-        println("Lazy init StringTranslations")
+        logger.debug("Lazy initialize stringTranslations...")
         fetchStringTranslations()
     }
 
     private fun fetchStringTranslations(): Map<Int, StringTranslation> {
-        DriverManager.getConnection(config[db_connection_string]).use { connection ->
+        DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [StringTranslations]")
 
@@ -82,10 +76,7 @@ class OmnitrackerDatabase {
                 val guid = resultSet.getString("str_guid")
                 val type = resultSet.getInt("type")
                 val fieldId = resultSet.getInt("ref")
-                //val field = resultSet.getInt("field")
-                //val field = fields[fieldId]
                 val folderId = resultSet.getInt("folder")
-                //val folder = folders[folderId]
                 val langCode = resultSet.getString("langcode")
                 val text = resultSet.getString("txt") ?: null
                 val untranslated = resultSet.getBoolean("untranslated")
@@ -111,12 +102,12 @@ class OmnitrackerDatabase {
     }
 
     val scripts: List<Script> by lazy {
-        println("Lazy init Scripts")
+        logger.debug("Lazy initialize scripts...")
         fetchScripts()
     }
 
     private fun fetchScripts(): List<Script> {
-        DriverManager.getConnection(config[db_connection_string]).use { connection ->
+        DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("SELECT id, folder, type, name, script FROM [Scripts]")
 
@@ -125,7 +116,6 @@ class OmnitrackerDatabase {
             while (resultSet.next()) {
                 val id = resultSet.getInt("id")
                 val folderId = resultSet.getInt("folder")
-                //val folder = folders[folderId]
                 val type = resultSet.getInt("type")
                 val name = resultSet.getString("name")
                 val content = resultSet.getString("script")
@@ -146,12 +136,12 @@ class OmnitrackerDatabase {
     }
 
     val folders: Map<Int, Folder> by lazy {
-        println("Lazy init Folders")
+        logger.debug("Lazy initialize folders...")
         fetchFolders()
     }
 
-    fun fetchFolders(): Map<Int, Folder> {
-        DriverManager.getConnection(config[db_connection_string]).use { connection ->
+    private fun fetchFolders(): Map<Int, Folder> {
+        DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("SELECT id, name, parent, term_singular, term_plural, alias FROM [ProblemArea]")
 
@@ -177,8 +167,6 @@ class OmnitrackerDatabase {
 
                 folders[folder.id] = folder
             }
-
-            // populate fields
 
             return folders
         }

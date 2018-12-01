@@ -1,24 +1,22 @@
 package de.debuglevel.omnitrackerdatabasebinding.models
 
 data class Field(val id: Int,
-        //val folder: Folder,
-                 private val folderId: Int, /* database column "area" */
+                 val alias: String?,
                  val label: String,
                  val remark: String?,
-                 private val typeId: Int, /* 252 = ref to obj, 254 = list of ref obj */
-                 val alias: String?,
-                 val subtype: Int,
                  val maxSize: Int,
-                 private val referenceFolderId: Int?, /* database column "refobj_key" */
+                 private val typeId: Int,
+                 val subtypeId: Int,
+                 private val folderId: Int,
+                 private val referenceFolderId: Int?,
                  private val folderMap: Lazy<Map<Int, Folder>>,
                  private val stringTranslationMap: Lazy<Map<Int, StringTranslation>>
 ) {
     val type: FieldType?
-        get() {
-            return FieldType.values().firstOrNull { it.id == typeId }
-        }
+        get() = FieldType.values().firstOrNull { it.id == typeId }
 
-    val folder: Folder get() = folderMap.value.getValue(folderId)
+    val folder: Folder
+        get() = folderMap.value.getValue(folderId)
 
     /**
      * If this field is a ReferenceTo
@@ -26,14 +24,33 @@ data class Field(val id: Int,
     val referenceFolder: Folder?
         get() = folderMap.value[this.referenceFolderId]
 
-    override fun toString(): String {
-        var s = "$id: $label ($alias) [${folder.alias}]"
-        if (referenceFolder != null) {
-            s += " -> ${referenceFolder?.name}"
-        }
+    override fun hashCode() = this.id
 
-        return s
+    override fun equals(other: Any?): Boolean {
+        return when {
+            other == null -> false
+            this === other -> true
+            other is Field -> {
+                val o = other
+                this.id == o.id &&
+                        this.folderId == o.folderId &&
+                        this.label == o.label &&
+                        this.remark == o.remark &&
+                        this.typeId == o.typeId &&
+                        this.maxSize == o.maxSize
+            }
+            else -> false
+        }
     }
 
-    override fun hashCode() = this.id
+    override fun toString(): String {
+        return "Field(" +
+                "id=$id," +
+                "folder=${folder.alias}," +
+                "label='$label'," +
+                "type=${type?.name}," +
+                "alias=$alias," +
+                "referenceFolder=${referenceFolder?.alias}" +
+                ")"
+    }
 }

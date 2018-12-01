@@ -11,13 +11,30 @@ class OmnitrackerDatabase {
     private val logger = KotlinLogging.logger {}
 
     init {
-        logger.debug { "Initialize OMNITRACKER DatabaseBinding..." }
+        logger.debug { "Initializing OMNITRACKER DatabaseBinding..." }
+
+        // MSSQL driver need to be loaded explicitly
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
     }
 
     val fields: Map<Int, Field> by lazy {
-        logger.debug("Lazy initialize fields...")
+        logger.debug("Lazy initializing fields...")
         fetchFields()
+    }
+
+    val stringTranslations: Map<Int, StringTranslation> by lazy {
+        logger.debug("Lazy initializing stringTranslations...")
+        fetchStringTranslations()
+    }
+
+    val scripts: Map<Int, Script> by lazy {
+        logger.debug("Lazy initializing scripts...")
+        fetchScripts()
+    }
+
+    val folders: Map<Int, Folder> by lazy {
+        logger.debug("Lazy initializing folders...")
+        fetchFolders()
     }
 
     private fun fetchFields(): Map<Int, Field> {
@@ -32,7 +49,7 @@ class OmnitrackerDatabase {
                 val folderId = resultSet.getInt("area")
                 val label = resultSet.getString("label")
                 val remark = resultSet.getString("remark")
-                val type = resultSet.getInt("type")
+                val typeId = resultSet.getInt("type")
                 val alias = resultSet.getString("alias")
                 val subtype = resultSet.getInt("subtype")
                 val maxSize = resultSet.getInt("max_size")
@@ -40,13 +57,13 @@ class OmnitrackerDatabase {
 
                 val field = Field(
                         id,
-                        folderId,
+                        alias,
                         label,
                         remark,
-                        type,
-                        alias,
-                        subtype,
                         maxSize,
+                        typeId,
+                        subtype,
+                        folderId,
                         referenceFolderId,
                         lazy { folders },
                         lazy { stringTranslations }
@@ -57,11 +74,6 @@ class OmnitrackerDatabase {
 
             return fields
         }
-    }
-
-    val stringTranslations: Map<Int, StringTranslation> by lazy {
-        logger.debug("Lazy initialize stringTranslations...")
-        fetchStringTranslations()
     }
 
     private fun fetchStringTranslations(): Map<Int, StringTranslation> {
@@ -77,21 +89,21 @@ class OmnitrackerDatabase {
                 val type = resultSet.getInt("type")
                 val fieldId = resultSet.getInt("ref")
                 val folderId = resultSet.getInt("folder")
-                val langCode = resultSet.getString("langcode")
+                val languageCode = resultSet.getString("langcode")
                 val text = resultSet.getString("txt") ?: null
                 val untranslated = resultSet.getBoolean("untranslated")
 
                 val stringTranslation = StringTranslation(
                         id,
                         guid,
-                        folderId,
-                        lazy { folders },
-                        langCode,
+                        languageCode,
                         text,
                         untranslated,
                         type,
+                        fieldId,
+                        folderId,
                         lazy { fields },
-                        fieldId
+                        lazy { folders }
                 )
 
                 stringTranslations[id] = stringTranslation
@@ -101,17 +113,12 @@ class OmnitrackerDatabase {
         }
     }
 
-    val scripts: List<Script> by lazy {
-        logger.debug("Lazy initialize scripts...")
-        fetchScripts()
-    }
-
-    private fun fetchScripts(): List<Script> {
+    private fun fetchScripts(): Map<Int, Script> {
         DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("SELECT id, folder, type, name, script FROM [Scripts]")
 
-            val scripts = mutableListOf<Script>()
+            val scripts = hashMapOf<Int, Script>()
 
             while (resultSet.next()) {
                 val id = resultSet.getInt("id")
@@ -122,22 +129,17 @@ class OmnitrackerDatabase {
 
                 val script = Script(
                         id,
-                        folderId,
-                        lazy { folders },
-                        type,
                         name,
-                        content)
+                        content,
+                        type,
+                        folderId,
+                        lazy { folders })
 
-                scripts.add(script)
+                scripts[id] = script
             }
 
             return scripts
         }
-    }
-
-    val folders: Map<Int, Folder> by lazy {
-        logger.debug("Lazy initialize folders...")
-        fetchFolders()
     }
 
     private fun fetchFolders(): Map<Int, Folder> {
@@ -150,7 +152,7 @@ class OmnitrackerDatabase {
             while (resultSet.next()) {
                 val id = resultSet.getInt("id")
                 val name = resultSet.getString("name")
-                val parentId = resultSet.getInt("parent")
+                val parentFolderId = resultSet.getInt("parent")
                 val singularTerm = resultSet.getString("term_singular")
                 val pluralTerm = resultSet.getString("term_plural")
                 val alias = resultSet.getString("alias")
@@ -158,11 +160,12 @@ class OmnitrackerDatabase {
                 val folder = Folder(
                         id,
                         name,
-                        parentId,
+                        alias,
                         singularTerm,
                         pluralTerm,
-                        alias,
-                        lazy { folders }
+                        parentFolderId,
+                        lazy { folders },
+                        lazy { fields }
                 )
 
                 folders[folder.id] = folder

@@ -3,12 +3,15 @@ package de.debuglevel.omnitrackerdatabasebinding.models
 data class Script(val id: Int,
                   val name: String,
                   val content: String?,
-                  val typeId: Int,
+                  private val typeId: Int,
                   private val folderId: Int,
                   private val folderMap: Lazy<Map<Int, Folder>>
 ) {
-    val folder: Folder
-        get() = folderMap.value.getValue(folderId)
+    val folder: Folder?
+        get() = folderMap.value[folderId]
+
+    val type: ScriptType?
+        get() = ScriptType.values().firstOrNull { it.id == typeId }
 
     override fun hashCode() = this.id
 
@@ -31,10 +34,10 @@ data class Script(val id: Int,
     override fun toString(): String {
         return "Script(" +
                 "id=$id," +
-                "folder=${folder.alias}," +
+                "folder=${folder?.alias}," +
                 "typeId=$typeId," +
                 "name='$name'," +
-                "content=$content" +
+//                "content=$content" +
                 ")"
     }
 }

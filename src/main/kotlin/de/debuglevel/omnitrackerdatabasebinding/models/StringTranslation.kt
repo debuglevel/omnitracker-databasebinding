@@ -6,7 +6,7 @@ data class StringTranslation(val id: Int,
                              val text: String?,
                              val untranslated: Boolean,
                              private val typeId: Int,
-                             val fieldId: Int?,
+                             private val fieldId: Int?,
                              private val folderId: Int?,
                              private val fieldMap: Lazy<Map<Int, Field>>,
                              private val folderMap: Lazy<Map<Int, Folder>>
@@ -45,6 +45,7 @@ data class StringTranslation(val id: Int,
         return "StringTranslation(" +
                 "id=$id," +
                 "guid='$guid'," +
+                "typeId='$typeId'," +
                 "folder=${folder?.alias}," +
                 "languageCode='$languageCode'," +
                 "text=$text," +

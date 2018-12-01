@@ -6,7 +6,7 @@ data class Field(val id: Int,
                  val remark: String?,
                  val maxSize: Int,
                  private val typeId: Int,
-                 val subtypeId: Int,
+                 private val subtypeId: Int,
                  private val folderId: Int,
                  private val referenceFolderId: Int?,
                  private val folderMap: Lazy<Map<Int, Folder>>,
@@ -48,6 +48,8 @@ data class Field(val id: Int,
                 "id=$id," +
                 "folder=${folder.alias}," +
                 "label='$label'," +
+                "typeId=$typeId," +
+                "subtypeId=$subtypeId," +
                 "type=${type?.name}," +
                 "alias=$alias," +
                 "referenceFolder=${referenceFolder?.alias}" +

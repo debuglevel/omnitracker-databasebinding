@@ -12,12 +12,11 @@ data class Field(val id: Int,
                  private val referenceFolderId: Int?, /* database column "refobj_key" */
                  private val folderMap: Lazy<Map<Int, Folder>>,
                  private val stringTranslationMap: Lazy<Map<Int, StringTranslation>>
-                 )
-{
+) {
     val type: FieldType?
-    get() {
-        return FieldType.values().firstOrNull { it.id == typeId }
-    }
+        get() {
+            return FieldType.values().firstOrNull { it.id == typeId }
+        }
 
     val folder: Folder get() = folderMap.value.getValue(folderId)
 

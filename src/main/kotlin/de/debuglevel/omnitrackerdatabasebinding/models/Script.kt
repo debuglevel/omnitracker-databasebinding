@@ -7,8 +7,7 @@ data class Script(val id: Int,
                   val type: Int,
                   val name: String,
                   val content: String? /* database column "script" */
-)
-{
+) {
     val folder: Folder get() = folderMap.value.getValue(folderId)
 
     override fun toString() = "$id (${folder.alias}): $name"

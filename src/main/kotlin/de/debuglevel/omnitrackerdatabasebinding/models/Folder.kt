@@ -7,8 +7,7 @@ data class Folder(val id: Int,
                   val pluralTerm: String? = null,
                   val alias: String? = null,
                   private val folderMap: Lazy<HashMap<Int, Folder>>
-)
-{
+) {
     val fields = listOf<Field>()
 
     val parentFolder: Folder?

@@ -2,7 +2,7 @@ package de.debuglevel.omnitrackerdatabasebinding.models
 
 data class StringTranslation(val id: Int,
                              val guid: String,
-                             val languageCode: String,
+                             private val languageCode: String,
                              val text: String?,
                              val untranslated: Boolean,
                              private val typeId: Int,
@@ -19,6 +19,9 @@ data class StringTranslation(val id: Int,
 
     val type: StringTranslationType?
         get() = StringTranslationType.values().firstOrNull { it.id == typeId }
+
+    val language: StringTranslationLanguage?
+        get() = StringTranslationLanguage.values().firstOrNull { it.languageCode == languageCode }
 
     override fun hashCode() = this.id
 

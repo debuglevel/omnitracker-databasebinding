@@ -34,7 +34,7 @@ compileTestKotlin {
 }
 
 group 'de.debuglevel.omnitrackerdatabasebinding'
-version '0.0.2-SNAPSHOT'
+version '0.0.2'
 
 sourceCompatibility = 1.8
 

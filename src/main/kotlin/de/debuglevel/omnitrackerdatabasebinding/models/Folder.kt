@@ -15,6 +15,15 @@ data class Folder(val id: Int,
     val parentFolder: Folder?
         get() = folderMap.value[this.parentFolderId]
 
+    val path: String
+        get() {
+            return if (parentFolder != null) {
+                "${parentFolder?.path}\\$name"
+            } else {
+                "\\$name"
+            }
+        }
+
     override fun hashCode() = this.id
 
     override fun equals(other: Any?): Boolean {

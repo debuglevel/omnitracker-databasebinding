@@ -24,15 +24,12 @@ data class Field(val id: Int,
 
     fun getName(language: StringTranslationLanguage) = stringTranslations.values
             .singleOrNull { it.language == language && it.type == StringTranslationType.FieldName }
-            ?.text
 
     fun getComment(language: StringTranslationLanguage) = stringTranslations.values
             .singleOrNull { it.language == language && it.type == StringTranslationType.Comment }
-            ?.text
 
     fun getDescription(language: StringTranslationLanguage) = stringTranslations.values
             .singleOrNull { it.language == language && it.type == StringTranslationType.Description }
-            ?.text
 
     /**
      * If this field is a ReferenceTo

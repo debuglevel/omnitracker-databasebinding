@@ -151,7 +151,8 @@ class OmnitrackerDatabase {
 
             while (resultSet.next()) {
                 val id = resultSet.getInt("id")
-                val name = resultSet.getString("name")
+                // 'name' and some other columns are CHAR instead of VARCHAR and have to be trimed therefore.
+                val name = resultSet.getString("name").trimEnd()
                 val parentFolderId = resultSet.getInt("parent")
                 val singularTerm = resultSet.getString("term_singular")
                 val pluralTerm = resultSet.getString("term_plural")

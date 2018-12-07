@@ -47,10 +47,11 @@ class OmnitrackerDatabase {
             while (resultSet.next()) {
                 val id = resultSet.getInt("id")
                 val folderId = resultSet.getInt("area")
-                val label = resultSet.getString("label")
-                val remark = resultSet.getString("remark")
+                // some text fields are CHAR() instead of VARCHAR() and have spaces at the end therefore, which have to be removed.
+                val label = resultSet.getString("label").trimEnd()
+                val remark = resultSet.getString("remark").trimEnd()
                 val typeId = resultSet.getInt("type")
-                val alias = resultSet.getString("alias")
+                val alias = resultSet.getString("alias").trimEnd()
                 val subtype = resultSet.getInt("subtype")
                 val maxSize = resultSet.getInt("max_size")
                 val referenceFolderId = resultSet.getInt("refobj_key")
@@ -124,7 +125,7 @@ class OmnitrackerDatabase {
                 val id = resultSet.getInt("id")
                 val folderId = resultSet.getInt("folder")
                 val type = resultSet.getInt("type")
-                val name = resultSet.getString("name")
+                val name = resultSet.getString("name").trimEnd()
                 val content = resultSet.getString("script")
 
                 val script = Script(
@@ -154,9 +155,9 @@ class OmnitrackerDatabase {
                 // 'name' and some other columns are CHAR instead of VARCHAR and have to be trimed therefore.
                 val name = resultSet.getString("name").trimEnd()
                 val parentFolderId = resultSet.getInt("parent")
-                val singularTerm = resultSet.getString("term_singular")
-                val pluralTerm = resultSet.getString("term_plural")
-                val alias = resultSet.getString("alias")
+                val singularTerm = resultSet.getString("term_singular").trimEnd()
+                val pluralTerm = resultSet.getString("term_plural").trimEnd()
+                val alias = resultSet.getString("alias").trimEnd()
 
                 val folder = Folder(
                         id,

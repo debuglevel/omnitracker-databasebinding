@@ -7,7 +7,8 @@ data class Folder(val id: Int,
                   val pluralTerm: String? = null,
                   private val parentFolderId: Number,
                   private val folderMap: Lazy<Map<Int, Folder>>,
-                  private val fieldMap: Lazy<Map<Int, Field>>
+                  private val fieldMap: Lazy<Map<Int, Field>>,
+                  private val stringTranslationList: Lazy<List<StringTranslation>>
 ) {
     val fields: Map<Int, Field>
         get() = fieldMap.value.filter { it.value.folder == this }
@@ -18,11 +19,24 @@ data class Folder(val id: Int,
     val path: String
         get() {
             return if (parentFolder != null) {
-                "${parentFolder?.path}\\$name"
+                "${parentFolder?.path}\\${getName(StringTranslationLanguage.German)?.text}"
             } else {
-                "\\$name"
+                "\\${getName(StringTranslationLanguage.German)?.text}"
             }
         }
+
+    private val stringTranslations: List<StringTranslation> by lazy {
+        stringTranslationList.value.filter { it.folder == this }
+    }
+
+    fun getName(language: StringTranslationLanguage) = stringTranslations
+            .singleOrNull { it.language == language && it.type == StringTranslationType.Folder }
+
+    fun getComment(language: StringTranslationLanguage) = stringTranslations
+            .singleOrNull { it.language == language && it.type == StringTranslationType.Comment }
+
+    fun getDescription(language: StringTranslationLanguage) = stringTranslations
+            .singleOrNull { it.language == language && it.type == StringTranslationType.Description }
 
     override fun hashCode() = this.id
 

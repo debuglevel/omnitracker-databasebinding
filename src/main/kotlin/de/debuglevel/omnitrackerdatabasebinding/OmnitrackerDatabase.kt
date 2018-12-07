@@ -5,6 +5,7 @@ import de.debuglevel.omnitrackerdatabasebinding.models.Folder
 import de.debuglevel.omnitrackerdatabasebinding.models.Script
 import de.debuglevel.omnitrackerdatabasebinding.models.StringTranslation
 import mu.KotlinLogging
+import java.sql.Connection
 import java.sql.DriverManager
 
 class OmnitrackerDatabase {
@@ -22,7 +23,7 @@ class OmnitrackerDatabase {
         fetchFields()
     }
 
-    val stringTranslations: Map<Int, StringTranslation> by lazy {
+    val stringTranslations: List<StringTranslation> by lazy {
         logger.debug("Lazy initializing stringTranslations...")
         fetchStringTranslations()
     }
@@ -77,41 +78,48 @@ class OmnitrackerDatabase {
         }
     }
 
-    private fun fetchStringTranslations(): Map<Int, StringTranslation> {
+    private fun fetchStringTranslations(): List<StringTranslation> {
         DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
-            val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery("SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [StringTranslations]")
-
-            val stringTranslations = hashMapOf<Int, StringTranslation>()
-
-            while (resultSet.next()) {
-                val id = resultSet.getInt("id")
-                val guid = resultSet.getString("str_guid")
-                val type = resultSet.getInt("type")
-                val fieldId = resultSet.getInt("ref")
-                val folderId = resultSet.getInt("folder")
-                val languageCode = resultSet.getString("langcode")
-                val text = resultSet.getString("txt") ?: null
-                val untranslated = resultSet.getBoolean("untranslated")
-
-                val stringTranslation = StringTranslation(
-                        id,
-                        guid,
-                        languageCode,
-                        text,
-                        untranslated,
-                        type,
-                        fieldId,
-                        folderId,
-                        lazy { fields },
-                        lazy { folders }
-                )
-
-                stringTranslations[id] = stringTranslation
-            }
-
-            return stringTranslations
+            return fetchStringTranslations(true, connection)
+                    .plus(fetchStringTranslations(false, connection))
         }
+    }
+
+    private fun fetchStringTranslations(short: Boolean, connection: Connection): MutableList<StringTranslation> {
+        val table = if (short) "StringTransShort" else "StringTranslations"
+        val sqlStatement = connection.createStatement()
+        val resultSet = sqlStatement.executeQuery("SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [$table]")
+
+        val stringTranslations = mutableListOf<StringTranslation>()
+
+        while (resultSet.next()) {
+            val id = resultSet.getInt("id")
+            val guid = resultSet.getString("str_guid")
+            val type = resultSet.getInt("type")
+            val fieldId = resultSet.getInt("ref")
+            val folderId = resultSet.getInt("folder")
+            val languageCode = resultSet.getString("langcode")
+            val text = resultSet.getString("txt") ?: null
+            val untranslated = resultSet.getBoolean("untranslated")
+
+            val stringTranslation = StringTranslation(
+                    id,
+                    guid,
+                    languageCode,
+                    text,
+                    untranslated,
+                    short,
+                    type,
+                    fieldId,
+                    folderId,
+                    lazy { fields },
+                    lazy { folders }
+            )
+
+            stringTranslations.add(stringTranslation)
+        }
+
+        return stringTranslations
     }
 
     private fun fetchScripts(): Map<Int, Script> {
@@ -167,7 +175,8 @@ class OmnitrackerDatabase {
                         pluralTerm,
                         parentFolderId,
                         lazy { folders },
-                        lazy { fields }
+                        lazy { fields },
+                        lazy { stringTranslations }
                 )
 
                 folders[folder.id] = folder

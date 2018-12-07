@@ -10,7 +10,7 @@ data class Field(val id: Int,
                  private val folderId: Int,
                  private val referenceFolderId: Int?,
                  private val folderMap: Lazy<Map<Int, Folder>>,
-                 private val stringTranslationMap: Lazy<Map<Int, StringTranslation>>
+                 private val stringTranslationList: Lazy<List<StringTranslation>>
 ) {
     val type: FieldType?
         get() = FieldType.values().firstOrNull { it.id == typeId }
@@ -18,17 +18,17 @@ data class Field(val id: Int,
     val folder: Folder
         get() = folderMap.value.getValue(folderId)
 
-    private val stringTranslations: Map<Int, StringTranslation> by lazy {
-        stringTranslationMap.value.filter { it.value.field == this }
+    private val stringTranslations: List<StringTranslation> by lazy {
+        stringTranslationList.value.filter { it.field == this }
     }
 
-    fun getName(language: StringTranslationLanguage) = stringTranslations.values
+    fun getName(language: StringTranslationLanguage) = stringTranslations
             .singleOrNull { it.language == language && it.type == StringTranslationType.FieldName }
 
-    fun getComment(language: StringTranslationLanguage) = stringTranslations.values
+    fun getComment(language: StringTranslationLanguage) = stringTranslations
             .singleOrNull { it.language == language && it.type == StringTranslationType.Comment }
 
-    fun getDescription(language: StringTranslationLanguage) = stringTranslations.values
+    fun getDescription(language: StringTranslationLanguage) = stringTranslations
             .singleOrNull { it.language == language && it.type == StringTranslationType.Description }
 
     /**

@@ -5,6 +5,7 @@ data class StringTranslation(val id: Int,
                              private val languageCode: String,
                              val text: String?,
                              val untranslated: Boolean,
+                             val short: Boolean, // set if table is "StringTransShort"
                              private val typeId: Int,
                              private val fieldId: Int?,
                              private val folderId: Int?,
@@ -37,6 +38,7 @@ data class StringTranslation(val id: Int,
                         this.languageCode == o.languageCode &&
                         this.text == o.text &&
                         this.untranslated == o.untranslated &&
+                        this.short == o.short &&
                         this.typeId == o.typeId &&
                         this.fieldId == o.fieldId
             }
@@ -53,6 +55,7 @@ data class StringTranslation(val id: Int,
                 "languageCode='$languageCode'," +
                 "text=$text," +
                 "untranslated=$untranslated," +
+                "short=$short," +
                 "type=${type?.name}," +
                 "field=${field?.alias}" +
                 ")"

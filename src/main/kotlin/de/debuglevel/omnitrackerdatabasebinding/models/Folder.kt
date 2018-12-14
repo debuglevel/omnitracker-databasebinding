@@ -32,11 +32,8 @@ data class Folder(val id: Int,
     fun getName(language: StringTranslationLanguage) = stringTranslations
             .singleOrNull { it.language == language && it.type == StringTranslationType.Folder }
 
-    fun getComment(language: StringTranslationLanguage) = stringTranslations
-            .singleOrNull { it.language == language && it.type == StringTranslationType.Comment }
-
     fun getDescription(language: StringTranslationLanguage) = stringTranslations
-            .singleOrNull { it.language == language && it.type == StringTranslationType.Description }
+            .singleOrNull { it.language == language && it.type == StringTranslationType.FolderDescription }
 
     override fun hashCode() = this.id
 

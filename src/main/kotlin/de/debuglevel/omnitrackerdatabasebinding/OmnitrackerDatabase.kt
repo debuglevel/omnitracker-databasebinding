@@ -99,7 +99,12 @@ class OmnitrackerDatabase {
             val fieldId = resultSet.getInt("ref")
             val folderId = resultSet.getInt("folder")
             val languageCode = resultSet.getString("langcode")
-            val text = resultSet.getString("txt") ?: null
+            val textRaw = resultSet.getString("txt") ?: null
+            val text = if (short) {
+                textRaw?.trimEnd()
+            } else {
+                textRaw
+            }
             val untranslated = resultSet.getBoolean("untranslated")
 
             val stringTranslation = StringTranslation(

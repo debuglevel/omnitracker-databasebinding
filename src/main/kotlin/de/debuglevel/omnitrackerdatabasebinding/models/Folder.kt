@@ -30,7 +30,7 @@ data class Folder(val id: Int,
     }
 
     fun getName(language: StringTranslationLanguage) = stringTranslations
-            .singleOrNull { it.language == language && it.type == StringTranslationType.Folder }
+            .singleOrNull { it.language == language && it.type == StringTranslationType.FolderName }
 
     fun getDescription(language: StringTranslationLanguage) = stringTranslations
             .singleOrNull { it.language == language && it.type == StringTranslationType.FolderDescription }

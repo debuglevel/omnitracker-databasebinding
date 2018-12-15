@@ -26,10 +26,10 @@ data class Field(val id: Int,
             .singleOrNull { it.language == language && it.type == StringTranslationType.FieldName }
 
     fun getComment(language: StringTranslationLanguage) = stringTranslations
-            .singleOrNull { it.language == language && it.type == StringTranslationType.Comment }
+            .singleOrNull { it.language == language && it.type == StringTranslationType.FieldComment }
 
     fun getDescription(language: StringTranslationLanguage) = stringTranslations
-            .singleOrNull { it.language == language && it.type == StringTranslationType.Description }
+            .singleOrNull { it.language == language && it.type == StringTranslationType.FieldDescription }
 
     /**
      * If this field is a ReferenceTo

@@ -1,9 +1,6 @@
 package de.debuglevel.omnitrackerdatabasebinding
 
-import de.debuglevel.omnitrackerdatabasebinding.models.Field
-import de.debuglevel.omnitrackerdatabasebinding.models.Folder
-import de.debuglevel.omnitrackerdatabasebinding.models.Script
-import de.debuglevel.omnitrackerdatabasebinding.models.StringTranslation
+import de.debuglevel.omnitrackerdatabasebinding.models.*
 import mu.KotlinLogging
 import java.sql.Connection
 import java.sql.DriverManager
@@ -36,6 +33,11 @@ class OmnitrackerDatabase {
     val folders: Map<Int, Folder> by lazy {
         logger.debug("Lazy initializing folders...")
         fetchFolders()
+    }
+
+    val layouts: Map<Int, Layout> by lazy {
+        logger.debug("Lazy initializing layouts...")
+        fetchLayouts()
     }
 
     private fun fetchFields(): Map<Int, Field> {
@@ -188,6 +190,50 @@ class OmnitrackerDatabase {
             }
 
             return folders
+        }
+    }
+
+    private fun fetchLayouts(): Map<Int, Layout> {
+        DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
+            val sqlStatement = connection.createStatement()
+            val resultSet = sqlStatement.executeQuery("SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]")
+
+            val layouts = hashMapOf<Int, Layout>()
+
+            while (resultSet.next()) {
+                val id = resultSet.getInt("id")
+                val name = resultSet.getString("name")
+                val folderId = resultSet.getInt("folder")
+                val reportDataBase64 = resultSet.getString("report_data")
+                val typeId = resultSet.getInt("type")
+                val version = resultSet.getInt("version")
+                val outputTypeId = resultSet.getInt("output_type")
+                val mailmergeDoctype = resultSet.getInt("mailmerge_doctype")
+                val mailmergeSql = resultSet.getString("mailmerge_sql")
+                val mailmergeFiletype = resultSet.getInt("mailmerge_filetype")
+                val crReplaceMdb = resultSet.getInt("cr_replace_mdb")
+                val crStaticDbConn = resultSet.getString("cr_static_db_conn")
+
+                val layout = Layout(
+                        id,
+                        name,
+                        version,
+                        reportDataBase64,
+                        mailmergeSql,
+                        crReplaceMdb,
+                        crStaticDbConn,
+                        typeId,
+                        outputTypeId,
+                        mailmergeDoctype,
+                        mailmergeFiletype,
+                        folderId,
+                        lazy { folders }
+                )
+
+                layouts[id] = layout
+            }
+
+            return layouts
         }
     }
 }

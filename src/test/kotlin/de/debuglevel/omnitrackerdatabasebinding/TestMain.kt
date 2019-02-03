@@ -17,5 +17,5 @@ fun main(args: Array<String>) {
     omnitrackerDatabase.layouts
             .map { it.value }
             .sortedBy { it.id }
-            .forEach { println(it) }
+            .forEach { println(it.reportData) }
 }

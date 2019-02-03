@@ -26,7 +26,7 @@ data class Layout(val id: Int,
         get() = MailmergeFiletype.values().firstOrNull { it.id == mailmergeFiletypeId }
 
     val reportData: ByteArray
-        get() = Base64.getDecoder().decode(reportDataBase64)
+        get() = Base64.getMimeDecoder().decode(reportDataBase64)
 
     override fun hashCode() = this.id
 

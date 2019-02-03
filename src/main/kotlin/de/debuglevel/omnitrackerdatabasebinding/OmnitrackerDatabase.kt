@@ -4,6 +4,7 @@ import de.debuglevel.omnitrackerdatabasebinding.models.*
 import mu.KotlinLogging
 import java.sql.Connection
 import java.sql.DriverManager
+import java.util.*
 
 class OmnitrackerDatabase {
     private val logger = KotlinLogging.logger {}
@@ -38,6 +39,30 @@ class OmnitrackerDatabase {
     val layouts: Map<Int, Layout> by lazy {
         logger.debug("Lazy initializing layouts...")
         fetchLayouts()
+    }
+
+    fun updateLayoutReportData(layout: Layout, reportData: ByteArray) {
+        logger.debug("Updating report data for layout $layout...")
+
+        logger.trace("Converting byte data into Base64...")
+        val reportDataBase64 = Base64.getMimeEncoder().encodeToString(reportData)
+
+        DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
+            val preparedStatement = connection.prepareStatement("UPDATE [Layout] SET report_data = ? WHERE id = ?")
+            preparedStatement.setString(1, reportDataBase64)
+            preparedStatement.setInt(2, layout.id)
+
+            logger.trace("Executing update...")
+            val rowCount = preparedStatement.executeUpdate()
+            logger.trace("Count of affected rows is $rowCount")
+
+            if (rowCount == 1) {
+                return
+            } else {
+                logger.error("Count of affected rows was not 1 but $rowCount")
+                throw Exception("Row count on update was $rowCount although it should have been 1.")
+            }
+        }
     }
 
     private fun fetchFields(): Map<Int, Field> {

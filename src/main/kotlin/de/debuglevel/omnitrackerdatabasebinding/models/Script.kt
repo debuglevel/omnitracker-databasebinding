@@ -1,11 +1,12 @@
 package de.debuglevel.omnitrackerdatabasebinding.models
 
-data class Script(val id: Int,
-                  val name: String,
-                  val content: String?,
-                  private val typeId: Int,
-                  private val folderId: Int,
-                  private val folderMap: Lazy<Map<Int, Folder>>
+data class Script(
+    val id: Int,
+    val name: String,
+    val content: String?,
+    private val typeId: Int,
+    private val folderId: Int,
+    private val folderMap: Lazy<Map<Int, Folder>>
 ) {
     val folder: Folder?
         get() = folderMap.value[folderId]

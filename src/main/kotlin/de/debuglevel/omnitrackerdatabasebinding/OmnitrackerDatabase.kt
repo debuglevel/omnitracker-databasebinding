@@ -43,7 +43,8 @@ class OmnitrackerDatabase {
     private fun fetchFields(): Map<Int, Field> {
         DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery("SELECT id, area, label, remark, type, alias, subtype, max_size, refobj_key FROM [UserFieldDef]")
+            val resultSet =
+                sqlStatement.executeQuery("SELECT id, area, label, remark, type, alias, subtype, max_size, refobj_key FROM [UserFieldDef]")
 
             val fields = hashMapOf<Int, Field>()
 
@@ -60,17 +61,17 @@ class OmnitrackerDatabase {
                 val referenceFolderId = resultSet.getInt("refobj_key")
 
                 val field = Field(
-                        id,
-                        alias,
-                        label,
-                        remark,
-                        maxSize,
-                        typeId,
-                        subtype,
-                        folderId,
-                        referenceFolderId,
-                        lazy { folders },
-                        lazy { stringTranslations }
+                    id,
+                    alias,
+                    label,
+                    remark,
+                    maxSize,
+                    typeId,
+                    subtype,
+                    folderId,
+                    referenceFolderId,
+                    lazy { folders },
+                    lazy { stringTranslations }
                 )
 
                 fields[id] = field
@@ -83,14 +84,15 @@ class OmnitrackerDatabase {
     private fun fetchStringTranslations(): List<StringTranslation> {
         DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
             return fetchStringTranslations(true, connection)
-                    .plus(fetchStringTranslations(false, connection))
+                .plus(fetchStringTranslations(false, connection))
         }
     }
 
     private fun fetchStringTranslations(short: Boolean, connection: Connection): MutableList<StringTranslation> {
         val table = if (short) "StringTransShort" else "StringTranslations"
         val sqlStatement = connection.createStatement()
-        val resultSet = sqlStatement.executeQuery("SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [$table]")
+        val resultSet =
+            sqlStatement.executeQuery("SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [$table]")
 
         val stringTranslations = mutableListOf<StringTranslation>()
 
@@ -110,17 +112,17 @@ class OmnitrackerDatabase {
             val untranslated = resultSet.getBoolean("untranslated")
 
             val stringTranslation = StringTranslation(
-                    id,
-                    guid,
-                    languageCode,
-                    text,
-                    untranslated,
-                    short,
-                    type,
-                    fieldId,
-                    folderId,
-                    lazy { fields },
-                    lazy { folders }
+                id,
+                guid,
+                languageCode,
+                text,
+                untranslated,
+                short,
+                type,
+                fieldId,
+                folderId,
+                lazy { fields },
+                lazy { folders }
             )
 
             stringTranslations.add(stringTranslation)
@@ -144,12 +146,12 @@ class OmnitrackerDatabase {
                 val content = resultSet.getString("script")
 
                 val script = Script(
-                        id,
-                        name,
-                        content,
-                        type,
-                        folderId,
-                        lazy { folders })
+                    id,
+                    name,
+                    content,
+                    type,
+                    folderId,
+                    lazy { folders })
 
                 scripts[id] = script
             }
@@ -161,7 +163,8 @@ class OmnitrackerDatabase {
     private fun fetchFolders(): Map<Int, Folder> {
         DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery("SELECT id, name, parent, term_singular, term_plural, alias FROM [ProblemArea]")
+            val resultSet =
+                sqlStatement.executeQuery("SELECT id, name, parent, term_singular, term_plural, alias FROM [ProblemArea]")
 
             val folders = hashMapOf<Int, Folder>()
 
@@ -175,15 +178,15 @@ class OmnitrackerDatabase {
                 val alias = resultSet.getString("alias")?.trimEnd()
 
                 val folder = Folder(
-                        id,
-                        name,
-                        alias,
-                        singularTerm,
-                        pluralTerm,
-                        parentFolderId,
-                        lazy { folders },
-                        lazy { fields },
-                        lazy { stringTranslations }
+                    id,
+                    name,
+                    alias,
+                    singularTerm,
+                    pluralTerm,
+                    parentFolderId,
+                    lazy { folders },
+                    lazy { fields },
+                    lazy { stringTranslations }
                 )
 
                 folders[folder.id] = folder
@@ -196,7 +199,8 @@ class OmnitrackerDatabase {
     private fun fetchLayouts(): Map<Int, Layout> {
         DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery("SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]")
+            val resultSet =
+                sqlStatement.executeQuery("SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]")
 
             val layouts = hashMapOf<Int, Layout>()
 
@@ -215,19 +219,19 @@ class OmnitrackerDatabase {
                 val crStaticDbConn = resultSet.getString("cr_static_db_conn")
 
                 val layout = Layout(
-                        id,
-                        name,
-                        version,
-                        reportDataBase64,
-                        mailmergeSql,
-                        crReplaceMdb,
-                        crStaticDbConn,
-                        typeId,
-                        outputTypeId,
-                        mailmergeDoctype,
-                        mailmergeFiletype,
-                        folderId,
-                        lazy { folders }
+                    id,
+                    name,
+                    version,
+                    reportDataBase64,
+                    mailmergeSql,
+                    crReplaceMdb,
+                    crStaticDbConn,
+                    typeId,
+                    outputTypeId,
+                    mailmergeDoctype,
+                    mailmergeFiletype,
+                    folderId,
+                    lazy { folders }
                 )
 
                 layouts[id] = layout

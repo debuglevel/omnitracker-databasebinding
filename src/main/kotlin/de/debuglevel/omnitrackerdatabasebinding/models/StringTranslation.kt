@@ -1,16 +1,17 @@
 package de.debuglevel.omnitrackerdatabasebinding.models
 
-data class StringTranslation(val id: Int,
-                             val guid: String,
-                             private val languageCode: String,
-                             val text: String?,
-                             val untranslated: Boolean,
-                             val short: Boolean, // set if table is "StringTransShort"
-                             private val typeId: Int,
-                             private val fieldId: Int?,
-                             private val folderId: Int?,
-                             private val fieldMap: Lazy<Map<Int, Field>>,
-                             private val folderMap: Lazy<Map<Int, Folder>>
+data class StringTranslation(
+    val id: Int,
+    val guid: String,
+    private val languageCode: String,
+    val text: String?,
+    val untranslated: Boolean,
+    val short: Boolean, // set if table is "StringTransShort"
+    private val typeId: Int,
+    private val fieldId: Int?,
+    private val folderId: Int?,
+    private val fieldMap: Lazy<Map<Int, Field>>,
+    private val folderMap: Lazy<Map<Int, Folder>>
 ) {
     val folder: Folder?
         get() = folderMap.value[folderId]

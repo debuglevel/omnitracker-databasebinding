@@ -1,16 +1,17 @@
 package de.debuglevel.omnitrackerdatabasebinding.models
 
-data class Field(val id: Int,
-                 val alias: String?,
-                 val label: String,
-                 val remark: String?,
-                 val maxSize: Int,
-                 private val typeId: Int,
-                 private val subtypeId: Int,
-                 private val folderId: Int,
-                 private val referenceFolderId: Int?,
-                 private val folderMap: Lazy<Map<Int, Folder>>,
-                 private val stringTranslationList: Lazy<List<StringTranslation>>
+data class Field(
+    val id: Int,
+    val alias: String?,
+    val label: String,
+    val remark: String?,
+    val maxSize: Int,
+    private val typeId: Int,
+    private val subtypeId: Int,
+    private val folderId: Int,
+    private val referenceFolderId: Int?,
+    private val folderMap: Lazy<Map<Int, Folder>>,
+    private val stringTranslationList: Lazy<List<StringTranslation>>
 ) {
     val type: FieldType?
         get() = FieldType.values().firstOrNull { it.id == typeId }
@@ -23,13 +24,13 @@ data class Field(val id: Int,
     }
 
     fun getName(language: StringTranslationLanguage) = stringTranslations
-            .singleOrNull { it.language == language && it.type == StringTranslationType.FieldName }
+        .singleOrNull { it.language == language && it.type == StringTranslationType.FieldName }
 
     fun getComment(language: StringTranslationLanguage) = stringTranslations
-            .singleOrNull { it.language == language && it.type == StringTranslationType.FieldComment }
+        .singleOrNull { it.language == language && it.type == StringTranslationType.FieldComment }
 
     fun getDescription(language: StringTranslationLanguage) = stringTranslations
-            .singleOrNull { it.language == language && it.type == StringTranslationType.FieldDescription }
+        .singleOrNull { it.language == language && it.type == StringTranslationType.FieldDescription }
 
     /**
      * If this field is a ReferenceTo

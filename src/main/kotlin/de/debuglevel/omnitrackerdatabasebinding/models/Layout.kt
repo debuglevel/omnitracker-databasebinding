@@ -11,7 +11,7 @@ data class Layout(
     val crReplaceMdb: Int,
     val crStaticDbConn: String?,
     private val typeId: Int,
-    private val outputType: Int,
+    private val outputTypeId: Int,
     private val mailmergeDoctypeId: Int,
     private val mailmergeFiletypeId: Int,
     private val folderId: Int,
@@ -25,6 +25,9 @@ data class Layout(
 
     val mailmergeFiletype: MailmergeFiletype?
         get() = MailmergeFiletype.values().firstOrNull { it.id == mailmergeFiletypeId }
+
+    val outputType: LayoutOutputType?
+        get() = LayoutOutputType.values().firstOrNull { it.id == outputTypeId }
 
     val reportData: ByteArray
         get() = Base64.getMimeDecoder().decode(reportDataBase64)
@@ -44,7 +47,7 @@ data class Layout(
         if (crReplaceMdb != other.crReplaceMdb) return false
         if (crStaticDbConn != other.crStaticDbConn) return false
         if (typeId != other.typeId) return false
-        if (outputType != other.outputType) return false
+        if (outputTypeId != other.outputTypeId) return false
         if (mailmergeDoctypeId != other.mailmergeDoctypeId) return false
         if (mailmergeFiletypeId != other.mailmergeFiletypeId) return false
         if (folderId != other.folderId) return false
@@ -61,7 +64,7 @@ data class Layout(
                 "crReplaceMdb=$crReplaceMdb, " +
                 "crStaticDbConn='$crStaticDbConn', " +
                 "typeId=$typeId, " +
-                "outputType=$outputType, " +
+                "outputTypeId=$outputTypeId, " +
                 "mailmergeDoctypeId=$mailmergeDoctypeId, " +
                 "mailmergeFiletypeId=$mailmergeFiletypeId, " +
                 "folderId=$folderId" +

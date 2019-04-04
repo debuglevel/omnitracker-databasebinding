@@ -5,7 +5,7 @@ import java.util.*
 data class Layout(
     val id: Int,
     val name: String,
-    val version: Int,
+    val crystalreportsVersion: Int,
     val reportDataBase64: String,
     val mailmergeSql: String?,
     val crReplaceMdb: Int,
@@ -42,7 +42,7 @@ data class Layout(
 
         if (id != other.id) return false
         if (name != other.name) return false
-        if (version != other.version) return false
+        if (crystalreportsVersion != other.crystalreportsVersion) return false
         if (mailmergeSql != other.mailmergeSql) return false
         if (crReplaceMdb != other.crReplaceMdb) return false
         if (crStaticDbConn != other.crStaticDbConn) return false
@@ -59,7 +59,7 @@ data class Layout(
         return "Layout(" +
                 "id=$id, " +
                 "name='$name', " +
-                "version=$version, " +
+                "crystalreportsVersion=$crystalreportsVersion, " +
                 "mailmergeSql='$mailmergeSql', " +
                 "crReplaceMdb=$crReplaceMdb, " +
                 "crStaticDbConn='$crStaticDbConn', " +

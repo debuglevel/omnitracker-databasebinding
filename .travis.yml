@@ -1,0 +1,34 @@
+language: java
+jdk:
+  - openjdk8
+
+before_install:
+  - chmod +x gradlew
+  - chmod +x gradle/wrapper/gradle-wrapper.jar
+
+script:
+  - ./gradlew build sourcesJar javadocJar
+
+notifications:
+  email: false
+
+deploy:
+  - provider: releases
+    api_key:
+      secure: nfAi14G0yVISQxVWaQBHS6+7fBGNcPdSmm585xo6CqSUHpFyA96aEv3BxeDkmT55M6pSljBiLnOQ0NzpjTpQAYL3MKp3kNSqBiLQLCXQE0faWo6EeujK/8j/7XLhXjDXVLh/kMQF2cOgqLK2ewfOmuJfGmXBHihIrUB8Kd3dsWFdPVT0Y/8Ta1dKldUuWoTs8tHUQJgd+TCuUkFNhBIV84IXlecEEICXjmAFDaJWk7zhFsWLCRimnstloQTMZR2eiQ3z4I+jWEOoO1nsaZufMZjDCukp+Zwt5BlKEUaCx5yJzKog/rzCu94jzRAy1NVJ5AGIjdqm0QEIkESiwnVUasQnvDdpAfd4ksytCfRi2L2+URrL/ZeqcITKu93d0pmnpdV1X2F7vAad3iuG1pbjphElTIzJKLoHAnkzXOk6ihTGP98f4iO0cwsB9juhdtSWrOd2licl9FFf02wCd+cjN925inPTixaCCQ+CPpHVk0mdjyBk+Stjt4HbpWRIcIB0a0vQo5ctk4D0WekN+zh0AkE9eswtxhuOWJrIMqs3bEURZ+de17g3fKWxVP0t3FA+0amg+SYFbQ3nu1Lp5wj2I8OtJFyfrayzoABHNhH2u0TFEh/RLu/OXSfAFX50/sEpWTUH9wthqQBUSX0GTXnH9h84sh/e0aifznxXdbSXW7c=
+    file_glob: true
+    file: "**/build/libs/*.jar"
+    skip_cleanup: true
+    # only deploy on certain conditions: https://docs.travis-ci.com/user/deployment/#Conditional-Releases-with-on%3A
+    on:
+      # only deploy release if commit is tagged
+      tags: true
+
+  # deploy develop to the staging environment
+  - provider: script
+    script: ./gradlew build bintrayUpload --info
+    skip_cleanup: true
+    # only deploy on certain conditions: https://docs.travis-ci.com/user/deployment/#Conditional-Releases-with-on%3A
+    on:
+      # only deploy release if commit is tagged
+      tags: true

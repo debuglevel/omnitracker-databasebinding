@@ -5,5 +5,5 @@ enum class LayoutOutputType(
     val fileExtension: String
 ) {
     CrystalReports(0, "rpt"),
-    Word(1, "doc"),
+    Word(1, "dot"),
 }

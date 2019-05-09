@@ -1,5 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding
 
+import de.debuglevel.omnitrackerdatabasebinding.models.WebServiceConsumerProfileStatus
+
 fun main(args: Array<String>) {
     val omnitrackerDatabase = OmnitrackerDatabase()
     //omnitrackerDatabase.fields.map { it.value }.sortedBy { it.id }.forEach { println(it) }
@@ -17,5 +19,6 @@ fun main(args: Array<String>) {
     omnitrackerDatabase.webServiceConsumerCallProfiles
             .map { it.value }
             .sortedBy { it.id }
+        .filter { it.status != WebServiceConsumerProfileStatus.Valid }
         .forEach { println(it) }
 }

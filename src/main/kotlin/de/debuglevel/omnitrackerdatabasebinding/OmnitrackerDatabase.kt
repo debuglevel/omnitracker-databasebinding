@@ -41,6 +41,11 @@ class OmnitrackerDatabase {
         fetchLayouts()
     }
 
+    val webServiceConsumerProfiles: Map<Int, WebServiceConsumerProfile> by lazy {
+        logger.debug("Lazy initializing Web Service Consumer Profiles...")
+        fetchWebServiceConsumerProfiles()
+    }
+
     fun updateLayoutReportData(layout: Layout, reportData: ByteArray) {
         logger.debug("Updating report data for layout $layout...")
 
@@ -263,6 +268,53 @@ class OmnitrackerDatabase {
             }
 
             return layouts
+        }
+    }
+
+    private fun fetchWebServiceConsumerProfiles(): Map<Int, WebServiceConsumerProfile> {
+        DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
+            val sqlStatement = connection.createStatement()
+            val resultSet =
+                sqlStatement.executeQuery(
+                    "SELECT [id]\n" +
+                            "      ,[name]\n" +
+                            "      ,[alias]\n" +
+                            "      ,[user_]\n" +
+                            "      ,[profile_version]\n" +
+                            "      ,[last_change]\n" +
+                            "      ,[ws_endpoint]\n" +
+                            "      ,[ws_username]\n" +
+                            "      ,[ws_password]\n" +
+                            "      ,[gw_address]\n" +
+                            "      ,[gen_proxy_mode]\n" +
+                            "      ,[gen_proxy_options]\n" +
+                            "      ,[type]\n" +
+                            "      ,[ws_certificate]\n" +
+                            "      ,[no_wscred_toclient]\n" +
+                            "  FROM [IbWscProfiles]"
+                )
+
+            val webServiceConsumerProfiles = hashMapOf<Int, WebServiceConsumerProfile>()
+
+            while (resultSet.next()) {
+                val id = resultSet.getInt("id")
+                val name = resultSet.getString("name")
+                val alias = resultSet.getString("alias")
+                val profileVersion = resultSet.getInt("profile_version")
+                val endpointUrl = resultSet.getString("ws_endpoint")
+
+                val webServiceConsumerProfile = WebServiceConsumerProfile(
+                    id,
+                    name,
+                    alias,
+                    profileVersion,
+                    endpointUrl
+                )
+
+                webServiceConsumerProfiles[id] = webServiceConsumerProfile
+            }
+
+            return webServiceConsumerProfiles
         }
     }
 }

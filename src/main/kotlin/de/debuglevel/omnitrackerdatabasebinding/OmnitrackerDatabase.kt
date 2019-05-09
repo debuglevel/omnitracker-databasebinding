@@ -46,6 +46,11 @@ class OmnitrackerDatabase {
         fetchWebServiceConsumerProfiles()
     }
 
+    val webServiceConsumerCallProfiles: Map<Int, WebServiceConsumerCallProfile> by lazy {
+        logger.debug("Lazy initializing Web Service Consumer Call Profiles...")
+        fetchWebServiceConsumerCallProfiles()
+    }
+
     fun updateLayoutReportData(layout: Layout, reportData: ByteArray) {
         logger.debug("Updating report data for layout $layout...")
 
@@ -315,6 +320,61 @@ class OmnitrackerDatabase {
             }
 
             return webServiceConsumerProfiles
+        }
+    }
+
+    private fun fetchWebServiceConsumerCallProfiles(): Map<Int, WebServiceConsumerCallProfile> {
+        DriverManager.getConnection(Configuration.databaseConnectionString).use { connection ->
+            val sqlStatement = connection.createStatement()
+            val resultSet =
+                sqlStatement.executeQuery(
+                    "SELECT [id]\n" +
+                            "      ,[name]\n" +
+                            "      ,[alias]\n" +
+                            "      ,[user_]\n" +
+                            "      ,[profile_version]\n" +
+                            "      ,[profile_status]\n" +
+                            "      ,[folder_id_ot]\n" +
+                            "      ,[wsc_profile_id]\n" +
+                            "      ,[wsc_operation]\n" +
+                            "      ,[log_errors]\n" +
+                            "      ,[logfile_prefix]\n" +
+                            "      ,[logpath]\n" +
+                            "      ,[binding_settings]\n" +
+                            "      ,[in_param_script]\n" +
+                            "      ,[out_param_script]\n" +
+                            "      ,[last_change]\n" +
+                            "      ,[call_async]\n" +
+                            "  FROM [IbWscCallProfiles]"
+                )
+
+            val webServiceConsumerCallProfiles = hashMapOf<Int, WebServiceConsumerCallProfile>()
+
+            while (resultSet.next()) {
+                val id = resultSet.getInt("id")
+                val name = resultSet.getString("name")
+                val alias = resultSet.getString("alias")
+                val profileVersion = resultSet.getInt("profile_version")
+                val profileStatus = resultSet.getInt("profile_status")
+                val folderId = resultSet.getInt("folder_id_ot")
+                val webServiceConsumerProfileId = resultSet.getInt("wsc_profile_id")
+
+                val webServiceConsumerProfile = WebServiceConsumerCallProfile(
+                    id,
+                    name,
+                    alias,
+                    profileVersion,
+                    profileStatus,
+                    folderId,
+                    webServiceConsumerProfileId,
+                    lazy { folders },
+                    lazy { webServiceConsumerProfiles }
+                )
+
+                webServiceConsumerCallProfiles[id] = webServiceConsumerProfile
+            }
+
+            return webServiceConsumerCallProfiles
         }
     }
 }

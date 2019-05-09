@@ -14,8 +14,8 @@ fun main(args: Array<String>) {
 //            .flatMap { it.fields.values }
 //            .forEach { println("${it.folder.name}: ${it.getName(StringTranslationLanguage.German)}: ${it.getComment(StringTranslationLanguage.German)}") }
 
-    omnitrackerDatabase.layouts
+    omnitrackerDatabase.webServiceConsumerCallProfiles
             .map { it.value }
             .sortedBy { it.id }
-            .forEach { println(it.reportData) }
+        .forEach { println(it) }
 }

@@ -2,6 +2,7 @@ package de.debuglevel.omnitrackerdatabasebinding.layout
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
 import mu.KotlinLogging
+import java.sql.ResultSet
 import java.util.*
 import javax.inject.Singleton
 
@@ -12,49 +13,56 @@ class LayoutService(
 ) {
     private val logger = KotlinLogging.logger {}
 
+    private val layoutQuery =
+        "SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]"
+
     fun fetchLayouts(): Map<Int, Layout> {
         databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet =
-                sqlStatement.executeQuery("SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]")
+                sqlStatement.executeQuery(layoutQuery)
 
             val layouts = hashMapOf<Int, Layout>()
 
             while (resultSet.next()) {
-                val id = resultSet.getInt("id")
-                val name = resultSet.getString("name")
-                val folderId = resultSet.getInt("folder")
-                val reportDataBase64 = resultSet.getString("report_data")
-                val typeId = resultSet.getInt("type")
-                val version = resultSet.getInt("version")
-                val outputTypeId = resultSet.getInt("output_type")
-                val mailmergeDoctype = resultSet.getInt("mailmerge_doctype")
-                val mailmergeSql = resultSet.getString("mailmerge_sql")
-                val mailmergeFiletype = resultSet.getInt("mailmerge_filetype")
-                val crReplaceMdb = resultSet.getInt("cr_replace_mdb")
-                val crStaticDbConn = resultSet.getString("cr_static_db_conn")
-
-                val layout = Layout(
-                    id,
-                    name,
-                    version,
-                    reportDataBase64,
-                    mailmergeSql,
-                    crReplaceMdb,
-                    crStaticDbConn,
-                    typeId,
-                    outputTypeId,
-                    mailmergeDoctype,
-                    mailmergeFiletype,
-                    folderId
-                    //lazy { folderService.fetchFolders() }
-                )
-
-                layouts[id] = layout
+                val layout = buildLayout(resultSet)
+                layouts[layout.id] = layout
             }
 
             return layouts
         }
+    }
+
+    private fun buildLayout(resultSet: ResultSet): Layout {
+        val id = resultSet.getInt("id")
+        val name = resultSet.getString("name")
+        val folderId = resultSet.getInt("folder")
+        val reportDataBase64 = resultSet.getString("report_data")
+        val typeId = resultSet.getInt("type")
+        val version = resultSet.getInt("version")
+        val outputTypeId = resultSet.getInt("output_type")
+        val mailmergeDoctype = resultSet.getInt("mailmerge_doctype")
+        val mailmergeSql = resultSet.getString("mailmerge_sql")
+        val mailmergeFiletype = resultSet.getInt("mailmerge_filetype")
+        val crReplaceMdb = resultSet.getInt("cr_replace_mdb")
+        val crStaticDbConn = resultSet.getString("cr_static_db_conn")
+
+        val layout = Layout(
+            id,
+            name,
+            version,
+            reportDataBase64,
+            mailmergeSql,
+            crReplaceMdb,
+            crStaticDbConn,
+            typeId,
+            outputTypeId,
+            mailmergeDoctype,
+            mailmergeFiletype,
+            folderId
+            //lazy { folderService.fetchFolders() }
+        )
+        return layout
     }
 
     fun updateLayoutReportData(layout: Layout, reportData: ByteArray) {

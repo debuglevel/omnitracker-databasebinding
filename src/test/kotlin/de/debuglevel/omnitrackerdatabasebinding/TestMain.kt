@@ -17,8 +17,8 @@ fun main(args: Array<String>) {
 //            .forEach { println("${it.folder.name}: ${it.getName(StringTranslationLanguage.German)}: ${it.getComment(StringTranslationLanguage.German)}") }
 
     omnitrackerDatabase.webServiceConsumerCallProfiles
-            .map { it.value }
-            .sortedBy { it.id }
+        .map { it.value }
+        .sortedBy { it.id }
         .filter { it.status != WebServiceConsumerProfileStatus.Valid }
         .forEach { println(it) }
 }

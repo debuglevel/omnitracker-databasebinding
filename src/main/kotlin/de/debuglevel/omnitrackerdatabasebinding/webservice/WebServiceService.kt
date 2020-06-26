@@ -32,7 +32,7 @@ class WebServiceService(
             "      ,[call_async]\n" +
             "  FROM [IbWscCallProfiles]"
 
-    fun fetchWebServiceConsumerCallProfiles(): Map<Int, WebServiceConsumerCallProfile> {
+    fun getWebServiceConsumerCallProfiles(): Map<Int, WebServiceConsumerCallProfile> {
         databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet =
@@ -94,7 +94,7 @@ class WebServiceService(
             "      ,[no_wscred_toclient]\n" +
             "  FROM [IbWscProfiles]"
 
-    fun fetchWebServiceConsumerProfiles(): Map<Int, WebServiceConsumerProfile> {
+    fun getWebServiceConsumerProfiles(): Map<Int, WebServiceConsumerProfile> {
         DriverManager.getConnection(databaseService.connectionstring).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet =

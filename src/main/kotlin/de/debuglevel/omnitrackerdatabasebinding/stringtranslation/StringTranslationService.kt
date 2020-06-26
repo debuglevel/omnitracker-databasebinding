@@ -14,7 +14,7 @@ class StringTranslationService(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    private fun fetchStringTranslations(
+    private fun getStringTranslations(
         short: Boolean,
         connection: Connection/*, folders: Map<Int, Folder>, fields: Map<Int, Field>*/
     ): MutableList<StringTranslation> {
@@ -67,10 +67,10 @@ class StringTranslationService(
         return stringTranslation
     }
 
-    fun fetchStringTranslations(/*folders: Map<Int, Folder>, fields: Map<Int, Field>*/): List<StringTranslation> {
+    fun getStringTranslations(/*folders: Map<Int, Folder>, fields: Map<Int, Field>*/): List<StringTranslation> {
         databaseService.getConnection().use { connection ->
-            return fetchStringTranslations(true, connection/*, folders, fields*/)
-                .plus(fetchStringTranslations(false, connection/*, folders, fields*/))
+            return getStringTranslations(true, connection/*, folders, fields*/)
+                .plus(getStringTranslations(false, connection/*, folders, fields*/))
         }
     }
 }

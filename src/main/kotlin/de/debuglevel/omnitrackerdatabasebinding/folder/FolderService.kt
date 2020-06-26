@@ -15,7 +15,7 @@ class FolderService(
 
     private val folderQuery = "SELECT id, name, parent, term_singular, term_plural, alias FROM [ProblemArea]"
 
-    fun fetchFolders(): Map<Int, Folder> {
+    fun getFolders(): Map<Int, Folder> {
         databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet =

@@ -36,36 +36,36 @@ class OmnitrackerDatabase(
 
     val fields: Map<Int, Field> by lazy {
         logger.debug("Lazy initializing fields...")
-        fieldService.fetchFields()
+        fieldService.getFields()
     }
 
     val stringTranslations: List<StringTranslation> by lazy {
         logger.debug("Lazy initializing stringTranslations...")
-        stringTranslationService.fetchStringTranslations()
+        stringTranslationService.getStringTranslations()
     }
 
     val scripts: Map<Int, Script> by lazy {
         logger.debug("Lazy initializing scripts...")
-        scriptsService.fetchScripts()
+        scriptsService.getScripts()
     }
 
     val folders: Map<Int, Folder> by lazy {
         logger.debug("Lazy initializing folders...")
-        folderService.fetchFolders()
+        folderService.getFolders()
     }
 
     val layouts: Map<Int, Layout> by lazy {
         logger.debug("Lazy initializing layouts...")
-        layoutService.fetchLayouts()
+        layoutService.getLayouts()
     }
 
     val webServiceConsumerProfiles: Map<Int, WebServiceConsumerProfile> by lazy {
         logger.debug("Lazy initializing Web Service Consumer Profiles...")
-        webServiceService.fetchWebServiceConsumerProfiles()
+        webServiceService.getWebServiceConsumerProfiles()
     }
 
     val webServiceConsumerCallProfiles: Map<Int, WebServiceConsumerCallProfile> by lazy {
         logger.debug("Lazy initializing Web Service Consumer Call Profiles...")
-        webServiceService.fetchWebServiceConsumerCallProfiles()
+        webServiceService.getWebServiceConsumerCallProfiles()
     }
 }

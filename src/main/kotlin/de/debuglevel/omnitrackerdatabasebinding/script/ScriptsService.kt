@@ -14,7 +14,7 @@ class ScriptsService(
 
     private val scriptsQuery = "SELECT id, folder, type, name, script FROM [Scripts]"
 
-    fun fetchScripts(): Map<Int, Script> {
+    fun getScripts(): Map<Int, Script> {
         databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery(scriptsQuery)

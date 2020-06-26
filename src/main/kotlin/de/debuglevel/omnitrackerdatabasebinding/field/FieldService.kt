@@ -15,7 +15,7 @@ class FieldService(
     private val fieldQuery =
         "SELECT id, area, label, remark, type, alias, subtype, max_size, refobj_key FROM [UserFieldDef]"
 
-    fun fetchFields(/*folders: Map<Int, Folder>*/): Map<Int, Field> {
+    fun getFields(/*folders: Map<Int, Folder>*/): Map<Int, Field> {
         databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet =

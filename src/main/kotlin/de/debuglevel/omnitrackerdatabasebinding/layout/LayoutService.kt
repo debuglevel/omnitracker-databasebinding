@@ -16,7 +16,7 @@ class LayoutService(
     private val layoutQuery =
         "SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]"
 
-    fun fetchLayouts(): Map<Int, Layout> {
+    fun getLayouts(): Map<Int, Layout> {
         databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet =

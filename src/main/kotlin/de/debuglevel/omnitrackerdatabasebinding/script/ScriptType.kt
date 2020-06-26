@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.script
 
 
 enum class ScriptType(val id: Int) {

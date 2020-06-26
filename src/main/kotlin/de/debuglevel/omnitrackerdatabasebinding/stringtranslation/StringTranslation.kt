@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.stringtranslation
 
 data class StringTranslation(
     val id: Int,
@@ -7,17 +7,17 @@ data class StringTranslation(
     val text: String?,
     val untranslated: Boolean,
     val short: Boolean, // set if table is "StringTransShort"
-    private val typeId: Int,
-    private val fieldId: Int?,
-    private val folderId: Int?,
-    private val fieldMap: Lazy<Map<Int, Field>>,
-    private val folderMap: Lazy<Map<Int, Folder>>
+    val typeId: Int,
+    val fieldId: Int?,
+    val folderId: Int?
+    //private val fieldMap: Lazy<Map<Int, Field>>,
+    //private val folderMap: Lazy<Map<Int, Folder>>
 ) {
-    val folder: Folder?
-        get() = folderMap.value[folderId]
-
-    val field: Field?
-        get() = fieldMap.value[fieldId]
+//    val folder: Folder?
+//        get() = folderMap.value[folderId]
+//
+//    val field: Field?
+//        get() = fieldMap.value[fieldId]
 
     val type: StringTranslationType?
         get() = StringTranslationType.values().firstOrNull { it.id == typeId }
@@ -52,13 +52,15 @@ data class StringTranslation(
                 "id=$id," +
                 "guid='$guid'," +
                 "typeId='$typeId'," +
-                "folder=${folder?.alias}," +
+                "folderId=${folderId}," +
+                //"folder=${folder?.alias}," +
                 "languageCode='$languageCode'," +
                 "text=$text," +
                 "untranslated=$untranslated," +
                 "short=$short," +
                 "type=${type?.name}," +
-                "field=${field?.alias}" +
+                "fieldId=${fieldId}" +
+                //"field=${field?.alias}" +
                 ")"
     }
 }

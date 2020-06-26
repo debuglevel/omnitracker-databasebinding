@@ -1,15 +1,15 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.script
 
 data class Script(
     val id: Int,
     val name: String,
     val content: String?,
-    private val typeId: Int,
-    private val folderId: Int,
-    private val folderMap: Lazy<Map<Int, Folder>>
+    val typeId: Int,
+    val folderId: Int
+    //private val folderMap: Lazy<Map<Int, Folder>>
 ) {
-    val folder: Folder?
-        get() = folderMap.value[folderId]
+//    val folder: Folder?
+//        get() = folderMap.value[folderId]
 
     val type: ScriptType?
         get() = ScriptType.values().firstOrNull { it.id == typeId }
@@ -35,7 +35,8 @@ data class Script(
     override fun toString(): String {
         return "Script(" +
                 "id=$id," +
-                "folder=${folder?.alias}," +
+                "folderId=${folderId}," +
+                //"folder=${folder?.alias}," +
                 "typeId=$typeId," +
                 "name='$name'," +
 //                "content=$content" +

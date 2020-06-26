@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.webservice
 
 data class WebServiceConsumerCallProfile(
     val id: Int,
@@ -6,16 +6,16 @@ data class WebServiceConsumerCallProfile(
     val alias: String?,
     val profileVersion: Int,
     private val profileStatus: Int,
-    private val folderId: Int,
-    private val webServiceConsumerProfileId: Int,
-    private val folderMap: Lazy<Map<Int, Folder>>,
-    private val webServiceConsumerProfileMap: Lazy<Map<Int, WebServiceConsumerProfile>>
+    val folderId: Int,
+    val webServiceConsumerProfileId: Int
+    //private val folderMap: Lazy<Map<Int, Folder>>,
+    //private val webServiceConsumerProfileMap: Lazy<Map<Int, WebServiceConsumerProfile>>
 ) {
-    val folder: Folder?
-        get() = folderMap.value[folderId]
-
-    val webServiceConsumerProfile: WebServiceConsumerProfile?
-        get() = webServiceConsumerProfileMap.value[webServiceConsumerProfileId]
+//    val folder: Folder?
+//        get() = folderMap.value[folderId]
+//
+//    val webServiceConsumerProfile: WebServiceConsumerProfile?
+//        get() = webServiceConsumerProfileMap.value[webServiceConsumerProfileId]
 
     val status: WebServiceConsumerProfileStatus?
         get() = WebServiceConsumerProfileStatus.values().firstOrNull { it.id == profileStatus }
@@ -35,7 +35,7 @@ data class WebServiceConsumerCallProfile(
         if (profileStatus != other.profileStatus) return false
         if (folderId != other.folderId) return false
         //if (webServiceConsumerProfileId != other.webServiceConsumerProfileId) return false
-        if (folderMap != other.folderMap) return false
+        //if (folderMap != other.folderMap) return false
         //if (webServiceConsumerProfileMap != other.webServiceConsumerProfileMap) return false
 
         return true

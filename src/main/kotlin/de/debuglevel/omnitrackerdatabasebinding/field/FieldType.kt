@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.field
 
 /**
  * 252 = reference to object

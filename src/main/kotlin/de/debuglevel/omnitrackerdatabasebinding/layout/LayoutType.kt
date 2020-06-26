@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.layout
 
 enum class LayoutType(val id: Int) {
     Type0(0),

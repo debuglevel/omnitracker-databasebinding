@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.field
 
 enum class FieldSubtype(val id: Int) {
     probably_Phonenumber(1),

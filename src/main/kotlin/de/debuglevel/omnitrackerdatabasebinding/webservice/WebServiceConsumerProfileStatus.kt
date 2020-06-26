@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.webservice
 
 enum class WebServiceConsumerProfileStatus(
     val id: Int

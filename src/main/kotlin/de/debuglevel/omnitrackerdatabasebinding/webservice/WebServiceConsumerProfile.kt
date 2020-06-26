@@ -1,11 +1,11 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.webservice
 
 data class WebServiceConsumerProfile(
     val id: Int,
     val name: String,
-    val alias: String,
+    val alias: String?,
     val profileVersion: Int,
-    val endpointUrl: String
+    val endpointUrl: String?
 ) {
     override fun hashCode() = this.id
 

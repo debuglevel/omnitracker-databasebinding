@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.models
+package de.debuglevel.omnitrackerdatabasebinding.layout
 
 import java.util.*
 
@@ -10,15 +10,15 @@ data class Layout(
     val mailmergeSql: String?,
     val crReplaceMdb: Int,
     val crStaticDbConn: String?,
-    private val typeId: Int,
-    private val outputTypeId: Int,
-    private val mailmergeDoctypeId: Int,
-    private val mailmergeFiletypeId: Int,
-    private val folderId: Int,
-    private val folderMap: Lazy<Map<Int, Folder>>
+    val typeId: Int,
+    val outputTypeId: Int,
+    val mailmergeDoctypeId: Int,
+    val mailmergeFiletypeId: Int,
+    val folderId: Int
+    //private val folderMap: Lazy<Map<Int, Folder>>
 ) {
-    val folder: Folder?
-        get() = folderMap.value[folderId]
+//    val folder: Folder?
+//        get() = folderMap.value[folderId]
 
     val type: LayoutType?
         get() = LayoutType.values().firstOrNull { it.id == typeId }

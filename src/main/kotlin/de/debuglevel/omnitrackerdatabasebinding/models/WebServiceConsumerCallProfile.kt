@@ -3,7 +3,7 @@ package de.debuglevel.omnitrackerdatabasebinding.models
 data class WebServiceConsumerCallProfile(
     val id: Int,
     val name: String,
-    val alias: String,
+    val alias: String?,
     val profileVersion: Int,
     private val profileStatus: Int,
     private val folderId: Int,

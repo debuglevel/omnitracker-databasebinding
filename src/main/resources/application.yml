@@ -6,7 +6,7 @@ database:
 
 logger:
   levels:
-    de.debuglevel: DEBUG
+    de.debuglevel: TRACE
     io.micronaut.http.server: DEBUG
     io.micronaut.data.query: DEBUG
 

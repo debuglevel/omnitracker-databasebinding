@@ -17,10 +17,11 @@ class LayoutService(
         "SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]"
 
     fun getLayouts(): Map<Int, Layout> {
-        databaseService.getConnection().use { connection ->
+        logger.debug { "Getting layouts..." }
+
+        val layouts = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet =
-                sqlStatement.executeQuery(layoutQuery)
+            val resultSet = sqlStatement.executeQuery(layoutQuery)
 
             val layouts = hashMapOf<Int, Layout>()
 
@@ -29,8 +30,15 @@ class LayoutService(
                 layouts[layout.id] = layout
             }
 
-            return layouts
+            layouts
         }
+
+        logger.debug { "Got ${layouts.size} layouts..." }
+        return layouts
+    }
+
+    fun getLayout(id: Int): Layout {
+        return getLayouts().getValue(id)
     }
 
     private fun buildLayout(resultSet: ResultSet): Layout {
@@ -62,6 +70,7 @@ class LayoutService(
             folderId
             //lazy { folderService.fetchFolders() }
         )
+
         return layout
     }
 

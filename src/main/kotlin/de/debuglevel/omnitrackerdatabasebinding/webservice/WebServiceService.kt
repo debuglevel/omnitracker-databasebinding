@@ -53,6 +53,10 @@ class WebServiceService(
         }
     }
 
+    fun getWebServiceConsumerCallProfile(id: Int): WebServiceConsumerCallProfile {
+        return getWebServiceConsumerCallProfiles().getValue(id)
+    }
+
     private fun buildWebServiceConsumerCallProfile(resultSet: ResultSet): WebServiceConsumerCallProfile {
         val id = resultSet.getInt("id")
         val name = resultSet.getString("name")
@@ -95,7 +99,7 @@ class WebServiceService(
             "  FROM [IbWscProfiles]"
 
     fun getWebServiceConsumerProfiles(): Map<Int, WebServiceConsumerProfile> {
-        DriverManager.getConnection(databaseService.connectionstring).use { connection ->
+        DriverManager.getConnection(databaseService.connectionString).use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet =
                 sqlStatement.executeQuery(
@@ -112,6 +116,10 @@ class WebServiceService(
 
             return webServiceConsumerProfiles
         }
+    }
+
+    fun getWebServiceConsumerProfile(id: Int): WebServiceConsumerProfile {
+        return getWebServiceConsumerProfiles().getValue(id)
     }
 
     private fun buildWebServiceConsumerProfile(resultSet: ResultSet): WebServiceConsumerProfile {

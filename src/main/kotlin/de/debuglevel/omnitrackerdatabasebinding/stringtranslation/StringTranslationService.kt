@@ -33,6 +33,11 @@ class StringTranslationService(
         return stringTranslations
     }
 
+//    fun getStringTranslation(id: Int): StringTranslation
+//    {
+//        return getStringTranslations().getValue(id)
+//    }
+
     private fun buildStringTranslation(
         resultSet: ResultSet,
         short: Boolean

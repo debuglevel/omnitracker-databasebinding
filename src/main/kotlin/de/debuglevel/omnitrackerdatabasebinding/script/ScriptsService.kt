@@ -30,6 +30,10 @@ class ScriptsService(
         }
     }
 
+    fun getScript(id: Int): Script {
+        return getScripts().getValue(id)
+    }
+
     private fun buildScript(resultSet: ResultSet): Script {
         val id = resultSet.getInt("id")
         val folderId = resultSet.getInt("folder")

@@ -32,6 +32,10 @@ class FieldService(
         }
     }
 
+    fun getField(id: Int): Field {
+        return getFields().getValue(id)
+    }
+
     private fun buildField(resultSet: ResultSet): Field {
         val id = resultSet.getInt("id")
         val folderId = resultSet.getInt("area")

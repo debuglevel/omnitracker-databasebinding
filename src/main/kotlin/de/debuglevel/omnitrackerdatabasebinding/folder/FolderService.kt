@@ -32,9 +32,13 @@ class FolderService(
         }
     }
 
+    fun getFolder(id: Int): Folder {
+        return getFolders().getValue(id)
+    }
+
     private fun buildFolder(resultSet: ResultSet): Folder {
         val id = resultSet.getInt("id")
-        // 'name' and some other columns are CHAR instead of VARCHAR and have to be trimed therefore.
+        // 'name' and some other columns are CHAR instead of VARCHAR and have to be trimmed therefore.
         val name = resultSet.getString("name").trimEnd()
         val parentFolderId = resultSet.getInt("parent")
         val singularTerm = resultSet.getString("term_singular")?.trimEnd()

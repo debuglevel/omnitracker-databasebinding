@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DatabaseService(
-    @Property(name = "database.connectionstring") val connectionstring: String
+    @Property(name = "database.connectionstring") val connectionString: String
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -20,6 +20,8 @@ class DatabaseService(
 
     fun getConnection(): Connection {
         logger.trace { "Getting connection..." }
-        return DriverManager.getConnection(connectionstring)
+        val connection = DriverManager.getConnection(connectionString)
+        logger.trace { "Got connection: $connection" }
+        return connection
     }
 }

@@ -6,7 +6,10 @@ data class Folder(
     val alias: String? = null,
     val singularTerm: String? = null,
     val pluralTerm: String? = null,
-    val parentFolderId: Number
+    val parentFolderId: Number,
+    val parentFolder: Folder?,
+    val path: String,
+    val description: String?
 //    private val folderMap: Lazy<Map<Int, Folder>>,
 //    private val fieldMap: Lazy<Map<Int, Field>>,
 //    private val stringTranslationList: Lazy<List<StringTranslation>>
@@ -57,11 +60,16 @@ data class Folder(
 
     override fun toString(): String {
         return "Folder(" +
-                "id=$id," +
-                "name='$name'," +
-                "parentFolderId=${parentFolderId}," +
-                //"parentFolder=${parentFolder?.alias}," +
-                "alias=$alias" +
+                "id=$id, " +
+                "name='$name', " +
+                "alias=$alias, " +
+                "singularTerm=$singularTerm, " +
+                "pluralTerm=$pluralTerm, " +
+                "parentFolderId=$parentFolderId, " +
+                //"parentFolder=$parentFolder, " +
+                "path='$path', " +
+                "description=$description" +
                 ")"
     }
+
 }

@@ -1,5 +1,6 @@
 package de.debuglevel.omnitrackerdatabasebinding.layout
 
+import de.debuglevel.omnitrackerdatabasebinding.folder.Folder
 import java.util.*
 
 data class Layout(
@@ -14,7 +15,8 @@ data class Layout(
     val outputTypeId: Int,
     val mailmergeDoctypeId: Int,
     val mailmergeFiletypeId: Int,
-    val folderId: Int
+    val folderId: Int,
+    val folder: Folder
     //private val folderMap: Lazy<Map<Int, Folder>>
 ) {
 //    val folder: Folder?

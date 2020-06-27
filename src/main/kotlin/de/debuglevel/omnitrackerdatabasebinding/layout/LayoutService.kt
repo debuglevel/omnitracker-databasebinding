@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.layout
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import mu.KotlinLogging
 import java.sql.ResultSet
 import java.util.*
@@ -8,8 +9,8 @@ import javax.inject.Singleton
 
 @Singleton
 class LayoutService(
-    private val databaseService: DatabaseService
-    //private val folderService: FolderService
+    private val databaseService: DatabaseService,
+    private val folderService: FolderService
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -42,6 +43,8 @@ class LayoutService(
     }
 
     private fun buildLayout(resultSet: ResultSet): Layout {
+        logger.debug { "Building layout for ResultSet $resultSet..." }
+
         val id = resultSet.getInt("id")
         val name = resultSet.getString("name")
         val folderId = resultSet.getInt("folder")
@@ -55,6 +58,8 @@ class LayoutService(
         val crReplaceMdb = resultSet.getInt("cr_replace_mdb")
         val crStaticDbConn = resultSet.getString("cr_static_db_conn")
 
+        val folder = folderService.getFolder(folderId)
+
         val layout = Layout(
             id,
             name,
@@ -67,10 +72,12 @@ class LayoutService(
             outputTypeId,
             mailmergeDoctype,
             mailmergeFiletype,
-            folderId
+            folderId,
+            folder!!
             //lazy { folderService.fetchFolders() }
         )
 
+        logger.debug { "Built layout: $layout" }
         return layout
     }
 

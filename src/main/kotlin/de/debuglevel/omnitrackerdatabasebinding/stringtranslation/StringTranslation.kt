@@ -3,7 +3,7 @@ package de.debuglevel.omnitrackerdatabasebinding.stringtranslation
 data class StringTranslation(
     val id: Int,
     val guid: String,
-    private val languageCode: String,
+    val languageCode: String,
     val text: String?,
     val untranslated: Boolean,
     val short: Boolean, // set if table is "StringTransShort"

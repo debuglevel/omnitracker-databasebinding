@@ -8,7 +8,6 @@ import de.debuglevel.omnitrackerdatabasebinding.layout.Layout
 import de.debuglevel.omnitrackerdatabasebinding.layout.LayoutService
 import de.debuglevel.omnitrackerdatabasebinding.script.Script
 import de.debuglevel.omnitrackerdatabasebinding.script.ScriptsService
-import de.debuglevel.omnitrackerdatabasebinding.stringtranslation.StringTranslation
 import de.debuglevel.omnitrackerdatabasebinding.stringtranslation.StringTranslationService
 import de.debuglevel.omnitrackerdatabasebinding.webservice.WebServiceConsumerCallProfile
 import de.debuglevel.omnitrackerdatabasebinding.webservice.WebServiceConsumerProfile
@@ -39,10 +38,10 @@ class OmnitrackerDatabase(
         fieldService.getFields()
     }
 
-    val stringTranslations: List<StringTranslation> by lazy {
-        logger.debug("Lazy initializing stringTranslations...")
-        stringTranslationService.getStringTranslations()
-    }
+//    val stringTranslations: List<StringTranslation> by lazy {
+//        logger.debug("Lazy initializing stringTranslations...")
+//        stringTranslationService.getStringTranslations()
+//    }
 
     val scripts: Map<Int, Script> by lazy {
         logger.debug("Lazy initializing scripts...")

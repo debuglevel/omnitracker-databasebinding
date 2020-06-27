@@ -16,12 +16,20 @@ class StringTranslationService(
 
     private fun getStringTranslations(
         short: Boolean,
-        connection: Connection/*, folders: Map<Int, Folder>, fields: Map<Int, Field>*/
+        connection: Connection,
+        folderId: Int?
     ): MutableList<StringTranslation> {
+        logger.debug { "Getting stringTranslations (short=$short, folderId=$folderId)..." }
+
         val table = if (short) "StringTransShort" else "StringTranslations"
         val sqlStatement = connection.createStatement()
-        val resultSet =
-            sqlStatement.executeQuery("SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [$table]")
+        val stringTranslationQuery =
+            if (folderId == null) {
+                "SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [$table]"
+            } else {
+                "SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [$table] WHERE folder=$folderId"
+            }
+        val resultSet = sqlStatement.executeQuery(stringTranslationQuery)
 
         val stringTranslations = mutableListOf<StringTranslation>()
 
@@ -30,6 +38,7 @@ class StringTranslationService(
             stringTranslations.add(stringTranslation)
         }
 
+        logger.debug { "Got ${stringTranslations.size} stringTranslations (short=$short, folderId=$folderId)" }
         return stringTranslations
     }
 
@@ -42,6 +51,8 @@ class StringTranslationService(
         resultSet: ResultSet,
         short: Boolean
     ): StringTranslation {
+        //logger.debug { "Building stringTranslation for ResultSet $resultSet ..." }
+
         val id = resultSet.getInt("id")
         val guid = resultSet.getString("str_guid")
         val type = resultSet.getInt("type")
@@ -49,10 +60,9 @@ class StringTranslationService(
         val folderId = resultSet.getInt("folder")
         val languageCode = resultSet.getString("langcode")
         val textRaw = resultSet.getString("txt") ?: null
-        val text = if (short) {
-            textRaw?.trimEnd()
-        } else {
-            textRaw
+        val text = when {
+            short -> textRaw?.trimEnd()
+            else -> textRaw
         }
         val untranslated = resultSet.getBoolean("untranslated")
 
@@ -69,13 +79,35 @@ class StringTranslationService(
             //                lazy { fields },
             //                lazy { folders }
         )
+
+        //logger.debug { "Built stringTranslation: $stringTranslation" }
         return stringTranslation
     }
 
-    fun getStringTranslations(/*folders: Map<Int, Folder>, fields: Map<Int, Field>*/): List<StringTranslation> {
-        databaseService.getConnection().use { connection ->
-            return getStringTranslations(true, connection/*, folders, fields*/)
-                .plus(getStringTranslations(false, connection/*, folders, fields*/))
+    private fun fetchStringTranslations(folderId: Int? = null): List<StringTranslation> {
+        logger.debug { "Fetching stringTranslations (folderId=$folderId)..." }
+
+        val stringTranslations = databaseService.getConnection().use { connection ->
+            getStringTranslations(true, connection, folderId)
+                .plus(getStringTranslations(false, connection, folderId))
         }
+
+        logger.debug { "Fetched ${stringTranslations.size} stringTranslations (folderId=$folderId)" }
+        return stringTranslations
+    }
+
+    private var cachedStringTranslations: List<StringTranslation>? = null
+
+    fun getStringTranslations(folderId: Int): List<StringTranslation> {
+        logger.debug { "Getting stringTranslations (folderId=$folderId)..." }
+
+        if (cachedStringTranslations == null) {
+            cachedStringTranslations = fetchStringTranslations()
+        }
+
+        val stringTranslations = cachedStringTranslations!!.filter { it.folderId == folderId }
+
+        logger.debug { "Got ${stringTranslations.size} stringTranslations (folderId=$folderId)" }
+        return stringTranslations
     }
 }

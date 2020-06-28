@@ -122,7 +122,7 @@ dependencies {
     //implementation "io.micronaut:micronaut-discovery-client"
 
     // Databases
-    implementation group: 'net.sf.ucanaccess', name: 'ucanaccess', version: '4.0.4'
+    implementation "net.sf.ucanaccess:ucanaccess:$ucanaccessVersion"
     implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '6.4.0.jre8'
 }
 

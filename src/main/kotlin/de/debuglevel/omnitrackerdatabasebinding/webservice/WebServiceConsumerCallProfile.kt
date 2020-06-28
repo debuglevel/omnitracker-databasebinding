@@ -1,5 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.webservice
 
+import de.debuglevel.omnitrackerdatabasebinding.folder.Folder
+
 data class WebServiceConsumerCallProfile(
     val id: Int,
     val name: String,
@@ -7,7 +9,9 @@ data class WebServiceConsumerCallProfile(
     val profileVersion: Int,
     private val profileStatus: Int,
     val folderId: Int,
-    val webServiceConsumerProfileId: Int
+    val webServiceConsumerProfileId: Int,
+    val folder: Folder?,
+    val webServiceConsumerProfile: WebServiceConsumerProfile?
     //private val folderMap: Lazy<Map<Int, Folder>>,
     //private val webServiceConsumerProfileMap: Lazy<Map<Int, WebServiceConsumerProfile>>
 ) {

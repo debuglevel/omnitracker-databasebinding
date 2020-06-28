@@ -15,8 +15,8 @@ fun main(args: Array<String>) {
 //    //println("StringTranslations:")
 //    //omnitrackerDatabase.stringTranslations.map { it }.sortedBy { it.id }.forEach { println("\t$it") }
 //
-    println("Scripts:")
-    omnitrackerDatabase.scripts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+//    println("Scripts:")
+//    omnitrackerDatabase.scripts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
 //
 //    println("Layouts:")
 //    omnitrackerDatabase.layouts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }

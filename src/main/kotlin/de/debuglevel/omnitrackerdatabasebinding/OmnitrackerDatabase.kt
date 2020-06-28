@@ -60,11 +60,11 @@ class OmnitrackerDatabase(
 
     val webServiceConsumerProfiles: Map<Int, WebServiceConsumerProfile> by lazy {
         logger.debug("Lazy initializing Web Service Consumer Profiles...")
-        webServiceService.getWebServiceConsumerProfiles()
+        webServiceService.getAllWebServiceConsumerProfiles()
     }
 
     val webServiceConsumerCallProfiles: Map<Int, WebServiceConsumerCallProfile> by lazy {
         logger.debug("Lazy initializing Web Service Consumer Call Profiles...")
-        webServiceService.getWebServiceConsumerCallProfiles()
+        webServiceService.getAllWebServiceConsumerCallProfiles()
     }
 }

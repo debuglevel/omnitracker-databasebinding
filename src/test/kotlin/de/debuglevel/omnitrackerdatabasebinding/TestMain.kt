@@ -6,8 +6,8 @@ fun main(args: Array<String>) {
     val context = Micronaut.build().start()
     val omnitrackerDatabase = context.getBean(OmnitrackerDatabase::class.java)
 
-    println("Folders:")
-    omnitrackerDatabase.folders.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+//    println("Folders:")
+//    omnitrackerDatabase.folders.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
 
 //    println("Fields:")
 //    omnitrackerDatabase.fields.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
@@ -18,8 +18,8 @@ fun main(args: Array<String>) {
 //    println("Scripts:")
 //    omnitrackerDatabase.scripts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
 //
-//    println("Layouts:")
-//    omnitrackerDatabase.layouts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+    println("Layouts:")
+    omnitrackerDatabase.layouts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
 //
 //    println("WSC Profiles:")
 //    omnitrackerDatabase.webServiceConsumerProfiles.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }

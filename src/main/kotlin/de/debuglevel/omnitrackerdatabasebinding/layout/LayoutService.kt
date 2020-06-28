@@ -14,35 +14,48 @@ class LayoutService(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    private val layoutQuery =
+    private val query =
         "SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]"
 
-    fun getLayouts(): Map<Int, Layout> {
+    fun getAll(): Map<Int, Layout> {
         logger.debug { "Getting layouts..." }
 
         val layouts = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery(layoutQuery)
+            val resultSet = sqlStatement.executeQuery(query)
 
             val layouts = hashMapOf<Int, Layout>()
 
             while (resultSet.next()) {
-                val layout = buildLayout(resultSet)
+                val layout = build(resultSet)
                 layouts[layout.id] = layout
             }
 
             layouts
         }
 
-        logger.debug { "Got ${layouts.size} layouts..." }
+        logger.debug { "Got ${layouts.size} layouts" }
         return layouts
     }
 
-    fun getLayout(id: Int): Layout {
-        return getLayouts().getValue(id)
+    fun get(id: Int): Layout? {
+        logger.debug { "Getting layout id=$id..." }
+        val layout = databaseService.getConnection().use { connection ->
+            val sqlStatement = connection.createStatement()
+            val resultSet = sqlStatement.executeQuery("$query WHERE id=$id")
+
+            val available = resultSet.next()
+            when {
+                available -> build(resultSet)
+                else -> null
+            }
+        }
+
+        logger.debug { "Got layout: $layout" }
+        return layout
     }
 
-    private fun buildLayout(resultSet: ResultSet): Layout {
+    private fun build(resultSet: ResultSet): Layout {
         logger.debug { "Building layout for ResultSet $resultSet..." }
 
         val id = resultSet.getInt("id")
@@ -58,7 +71,7 @@ class LayoutService(
         val crReplaceMdb = resultSet.getInt("cr_replace_mdb")
         val crStaticDbConn = resultSet.getString("cr_static_db_conn")
 
-        val folder = folderService.getFolder(folderId)
+        val folder = folderService.get(folderId)
 
         val layout = Layout(
             id,

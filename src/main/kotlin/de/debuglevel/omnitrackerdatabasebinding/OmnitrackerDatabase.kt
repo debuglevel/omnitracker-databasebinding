@@ -50,12 +50,12 @@ class OmnitrackerDatabase(
 
     val folders: Map<Int, Folder> by lazy {
         logger.debug("Lazy initializing folders...")
-        folderService.getFolders()
+        folderService.getAll()
     }
 
     val layouts: Map<Int, Layout> by lazy {
         logger.debug("Lazy initializing layouts...")
-        layoutService.getLayouts()
+        layoutService.getAll()
     }
 
     val webServiceConsumerProfiles: Map<Int, WebServiceConsumerProfile> by lazy {

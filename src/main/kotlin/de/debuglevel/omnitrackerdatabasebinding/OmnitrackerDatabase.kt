@@ -45,7 +45,7 @@ class OmnitrackerDatabase(
 
     val scripts: Map<Int, Script> by lazy {
         logger.debug("Lazy initializing scripts...")
-        scriptsService.getScripts()
+        scriptsService.getAll()
     }
 
     val folders: Map<Int, Folder> by lazy {

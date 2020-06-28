@@ -1,11 +1,14 @@
 package de.debuglevel.omnitrackerdatabasebinding.script
 
+import de.debuglevel.omnitrackerdatabasebinding.folder.Folder
+
 data class Script(
     val id: Int,
     val name: String,
     val content: String?,
     val typeId: Int,
-    val folderId: Int
+    val folderId: Int,
+    val folder: Folder?
     //private val folderMap: Lazy<Map<Int, Folder>>
 ) {
 //    val folder: Folder?

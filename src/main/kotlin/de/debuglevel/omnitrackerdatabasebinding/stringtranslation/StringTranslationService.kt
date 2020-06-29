@@ -34,7 +34,7 @@ class StringTranslationService(
         val stringTranslations = mutableListOf<StringTranslation>()
 
         while (resultSet.next()) {
-            val stringTranslation = buildStringTranslation(resultSet, short)
+            val stringTranslation = build(resultSet, short)
             stringTranslations.add(stringTranslation)
         }
 
@@ -47,7 +47,7 @@ class StringTranslationService(
 //        return getStringTranslations().getValue(id)
 //    }
 
-    private fun buildStringTranslation(
+    private fun build(
         resultSet: ResultSet,
         short: Boolean
     ): StringTranslation {

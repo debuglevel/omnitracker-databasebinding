@@ -53,7 +53,7 @@ abstract class EntityService<T : Entity>(
     }
 
     /**
-     * Gets all entities and updates the cache.
+     * Gets all entities, clears the cache and puts all entities into the cache.
      */
     fun getAll(): Map<Int, T> {
         logger.debug { "Getting ${name}s..." }
@@ -72,7 +72,7 @@ abstract class EntityService<T : Entity>(
             entities
         }
 
-        // TODO: could be useful to clear cache as we just retrieved all entities
+        cache.clear()
         putCache(entities)
 
         logger.debug { "Got ${entities.size} ${name}s" }

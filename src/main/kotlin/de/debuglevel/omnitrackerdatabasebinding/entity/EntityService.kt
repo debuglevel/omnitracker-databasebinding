@@ -16,12 +16,18 @@ abstract class EntityService<T : Entity>(
     protected abstract val query: String
     private val cache: MutableMap<Int, T> = mutableMapOf<Int, T>()
 
+    /**
+     * Puts an entity into the cache
+     */
     private fun putCache(entity: T) {
         logger.trace { "Putting id=${entity.id} into $name cache..." }
         cache[entity.id] = entity
         logger.trace { "Put id=${entity.id} into $name cache (size: ${cache.size}" }
     }
 
+    /**
+     * Puts (or updates) all entities into the cache
+     */
     private fun putCache(entities: Map<Int, T>) {
         val beforeCacheSize = cache.size
         logger.trace { "Putting ${entities.size} ${name}s into $name cache (size: $beforeCacheSize..." }
@@ -31,6 +37,9 @@ abstract class EntityService<T : Entity>(
         logger.trace { "Put $differenceSize ${name}s $name cache (size: $afterCacheSize" }
     }
 
+    /**
+     * Gets an entity from the cache by its id. Returns null if not present.
+     */
     private fun getFromCache(id: Int): T? {
         logger.trace { "Getting id=${id} from $name cache..." }
         val entity = cache[id]
@@ -43,6 +52,9 @@ abstract class EntityService<T : Entity>(
         return entity
     }
 
+    /**
+     * Gets all entities and updates the cache.
+     */
     fun getAll(): Map<Int, T> {
         logger.debug { "Getting ${name}s..." }
 
@@ -67,6 +79,10 @@ abstract class EntityService<T : Entity>(
         return entities
     }
 
+    /**
+     * Gets an entity by its id.
+     * Tries to get it from the the cache first. On cache miss, retrieve it from the database and put it into the cache.
+     */
     fun get(id: Int): T? {
         logger.debug { "Getting $name id=$id..." }
 
@@ -85,6 +101,9 @@ abstract class EntityService<T : Entity>(
         return entity
     }
 
+    /**
+     * Gets an entity from the database by its id. Returns null if it does not exist.
+     */
     private fun getFromDatabase(id: Int): T? {
         logger.debug { "Getting $name id=$id from database..." }
 
@@ -103,5 +122,8 @@ abstract class EntityService<T : Entity>(
         return entity
     }
 
+    /**
+     * Builds an entity object from the ResultSet.
+     */
     protected abstract fun build(resultSet: ResultSet): T
 }

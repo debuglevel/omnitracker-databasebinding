@@ -10,8 +10,9 @@ import de.debuglevel.omnitrackerdatabasebinding.script.Script
 import de.debuglevel.omnitrackerdatabasebinding.script.ScriptsService
 import de.debuglevel.omnitrackerdatabasebinding.stringtranslation.StringTranslationService
 import de.debuglevel.omnitrackerdatabasebinding.webservice.WebServiceConsumerCallProfile
+import de.debuglevel.omnitrackerdatabasebinding.webservice.WebServiceConsumerCallProfileService
 import de.debuglevel.omnitrackerdatabasebinding.webservice.WebServiceConsumerProfile
-import de.debuglevel.omnitrackerdatabasebinding.webservice.WebServiceService
+import de.debuglevel.omnitrackerdatabasebinding.webservice.WebServiceConsumerProfileService
 import mu.KotlinLogging
 import javax.inject.Singleton
 
@@ -22,7 +23,8 @@ class OmnitrackerDatabase(
     private val layoutService: LayoutService,
     private val scriptsService: ScriptsService,
     private val stringTranslationService: StringTranslationService,
-    private val webServiceService: WebServiceService
+    private val webServiceConsumerCallProfileService: WebServiceConsumerCallProfileService,
+    private val webServiceConsumerProfileService: WebServiceConsumerProfileService
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -60,11 +62,11 @@ class OmnitrackerDatabase(
 
     val webServiceConsumerProfiles: Map<Int, WebServiceConsumerProfile> by lazy {
         logger.debug("Lazy initializing Web Service Consumer Profiles...")
-        webServiceService.getAllWebServiceConsumerProfiles()
+        webServiceConsumerProfileService.getAll()
     }
 
     val webServiceConsumerCallProfiles: Map<Int, WebServiceConsumerCallProfile> by lazy {
         logger.debug("Lazy initializing Web Service Consumer Call Profiles...")
-        webServiceService.getAllWebServiceConsumerCallProfiles()
+        webServiceConsumerCallProfileService.getAll()
     }
 }

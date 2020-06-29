@@ -1,22 +1,28 @@
 package de.debuglevel.omnitrackerdatabasebinding
 
 import io.micronaut.runtime.Micronaut
+import kotlin.system.measureTimeMillis
 
 fun main(args: Array<String>) {
     val context = Micronaut.build().start()
     val omnitrackerDatabase = context.getBean(OmnitrackerDatabase::class.java)
 
-//    println("Folders:")
-//    omnitrackerDatabase.folders.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+    omnitrackerDatabase.connect()
 
+    println("Folders:")
+    omnitrackerDatabase.folders.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+//
 //    println("Fields:")
 //    omnitrackerDatabase.fields.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
 //
 //    //println("StringTranslations:")
 //    //omnitrackerDatabase.stringTranslations.map { it }.sortedBy { it.id }.forEach { println("\t$it") }
 //
-//    println("Scripts:")
-//    omnitrackerDatabase.scripts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+    println("Scripts:")
+    val time = measureTimeMillis {
+        omnitrackerDatabase.scripts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+    }
+    println(time / 1000)
 //
 //    println("Layouts:")
 //    omnitrackerDatabase.layouts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }

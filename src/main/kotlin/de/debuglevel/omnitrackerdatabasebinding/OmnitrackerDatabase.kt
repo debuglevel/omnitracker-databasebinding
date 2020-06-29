@@ -18,6 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class OmnitrackerDatabase(
+    private val databaseService: DatabaseService,
     private val fieldService: FieldService,
     private val folderService: FolderService,
     private val layoutService: LayoutService,
@@ -33,6 +34,13 @@ class OmnitrackerDatabase(
 
         // MSSQL driver need to be loaded explicitly
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
+    }
+
+    /**
+     * Not really necessary. Connects for a first time, which may take a while for AccessDB (eases performance measurement).
+     */
+    fun connect() {
+        databaseService.getConnection()
     }
 
     val fields: Map<Int, Field> by lazy {

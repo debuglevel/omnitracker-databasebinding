@@ -38,6 +38,7 @@ abstract class EntityService<T : Entity>(
 
     fun get(id: Int): T? {
         logger.debug { "Getting $name id=$id..." }
+
         val entity = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery("$query WHERE id=$id")

@@ -18,7 +18,7 @@ abstract class EntityService<T : Entity>(
     fun getAll(): Map<Int, T> {
         logger.debug { "Getting ${name}s..." }
 
-        val folders = databaseService.getConnection().use { connection ->
+        val entities = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
             val resultSet = sqlStatement.executeQuery(query)
 
@@ -32,8 +32,8 @@ abstract class EntityService<T : Entity>(
             entities
         }
 
-        logger.debug { "Got ${folders.size} ${name}s" }
-        return folders
+        logger.debug { "Got ${entities.size} ${name}s" }
+        return entities
     }
 
     fun get(id: Int): T? {

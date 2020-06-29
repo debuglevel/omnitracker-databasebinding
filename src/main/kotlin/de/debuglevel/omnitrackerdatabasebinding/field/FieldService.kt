@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.field
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import mu.KotlinLogging
 import java.sql.ResultSet
 import javax.inject.Singleton
@@ -9,34 +10,14 @@ import javax.inject.Singleton
 class FieldService(
     private val databaseService: DatabaseService
     //private val stringTranslationService: StringTranslationService
-) {
+) : EntityService<Field>(databaseService) {
     private val logger = KotlinLogging.logger {}
 
-    private val fieldQuery =
+    override val name = "Field"
+    override val query =
         "SELECT id, area, label, remark, type, alias, subtype, max_size, refobj_key FROM [UserFieldDef]"
 
-    fun getFields(/*folders: Map<Int, Folder>*/): Map<Int, Field> {
-        databaseService.getConnection().use { connection ->
-            val sqlStatement = connection.createStatement()
-            val resultSet =
-                sqlStatement.executeQuery(fieldQuery)
-
-            val fields = hashMapOf<Int, Field>()
-
-            while (resultSet.next()) {
-                val field = buildField(resultSet)
-                fields[field.id] = field
-            }
-
-            return fields
-        }
-    }
-
-    fun getField(id: Int): Field {
-        return getFields().getValue(id)
-    }
-
-    private fun buildField(resultSet: ResultSet): Field {
+    override fun build(resultSet: ResultSet): Field {
         val id = resultSet.getInt("id")
         val folderId = resultSet.getInt("area")
         // some text fields are CHAR() instead of VARCHAR() and have spaces at the end therefore, which have to be removed.

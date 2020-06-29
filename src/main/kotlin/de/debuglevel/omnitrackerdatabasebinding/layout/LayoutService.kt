@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.layout
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import mu.KotlinLogging
 import java.sql.ResultSet
@@ -11,51 +12,14 @@ import javax.inject.Singleton
 class LayoutService(
     private val databaseService: DatabaseService,
     private val folderService: FolderService
-) {
+) : EntityService<Layout>(databaseService) {
     private val logger = KotlinLogging.logger {}
 
-    private val query =
+    override val name = "Layout"
+    override val query =
         "SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]"
 
-    fun getAll(): Map<Int, Layout> {
-        logger.debug { "Getting layouts..." }
-
-        val layouts = databaseService.getConnection().use { connection ->
-            val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery(query)
-
-            val layouts = hashMapOf<Int, Layout>()
-
-            while (resultSet.next()) {
-                val layout = build(resultSet)
-                layouts[layout.id] = layout
-            }
-
-            layouts
-        }
-
-        logger.debug { "Got ${layouts.size} layouts" }
-        return layouts
-    }
-
-    fun get(id: Int): Layout? {
-        logger.debug { "Getting layout id=$id..." }
-        val layout = databaseService.getConnection().use { connection ->
-            val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery("$query WHERE id=$id")
-
-            val available = resultSet.next()
-            when {
-                available -> build(resultSet)
-                else -> null
-            }
-        }
-
-        logger.debug { "Got layout: $layout" }
-        return layout
-    }
-
-    private fun build(resultSet: ResultSet): Layout {
+    override fun build(resultSet: ResultSet): Layout {
         logger.debug { "Building layout for ResultSet $resultSet..." }
 
         val id = resultSet.getInt("id")

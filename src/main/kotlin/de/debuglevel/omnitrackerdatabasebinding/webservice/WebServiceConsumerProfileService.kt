@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.webservice
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import mu.KotlinLogging
 import java.sql.ResultSet
@@ -10,10 +11,11 @@ import javax.inject.Singleton
 class WebServiceConsumerProfileService(
     private val databaseService: DatabaseService,
     private val folderService: FolderService
-) {
+) : EntityService<WebServiceConsumerProfile>(databaseService) {
     private val logger = KotlinLogging.logger {}
 
-    private val query = "SELECT [id]\n" +
+    override val name = "WebService Consumer Profile"
+    override val query = "SELECT [id]\n" +
             "      ,[name]\n" +
             "      ,[alias]\n" +
             "      ,[user_]\n" +
@@ -30,45 +32,7 @@ class WebServiceConsumerProfileService(
             "      ,[no_wscred_toclient]\n" +
             "  FROM [IbWscProfiles]"
 
-    fun getAll(): Map<Int, WebServiceConsumerProfile> {
-        logger.debug { "Getting getAllWebServiceConsumerProfiles..." }
-
-        val webServiceConsumerProfiles = databaseService.getConnection().use { connection ->
-            val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery(query)
-
-            val webServiceConsumerProfiles = hashMapOf<Int, WebServiceConsumerProfile>()
-
-            while (resultSet.next()) {
-                val webServiceConsumerProfile = build(resultSet)
-                webServiceConsumerProfiles[webServiceConsumerProfile.id] = webServiceConsumerProfile
-            }
-
-            webServiceConsumerProfiles
-        }
-
-        logger.debug { "Got ${webServiceConsumerProfiles.size} WebServiceConsumerProfiles" }
-        return webServiceConsumerProfiles
-    }
-
-    fun get(id: Int): WebServiceConsumerProfile? {
-        logger.debug { "Getting WebServiceConsumerProfile id=$id..." }
-        val webServiceConsumerProfile = databaseService.getConnection().use { connection ->
-            val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery("$query WHERE id=$id")
-
-            val available = resultSet.next()
-            when {
-                available -> build(resultSet)
-                else -> null
-            }
-        }
-
-        logger.debug { "Got WebServiceConsumerProfile: $webServiceConsumerProfile" }
-        return webServiceConsumerProfile
-    }
-
-    private fun build(resultSet: ResultSet): WebServiceConsumerProfile {
+    override fun build(resultSet: ResultSet): WebServiceConsumerProfile {
         logger.debug { "Building WebServiceConsumerProfile for ResultSet $resultSet..." }
 
         val id = resultSet.getInt("id")

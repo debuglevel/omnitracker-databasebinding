@@ -1,10 +1,11 @@
 package de.debuglevel.omnitrackerdatabasebinding.layout
 
+import de.debuglevel.omnitrackerdatabasebinding.entity.Entity
 import de.debuglevel.omnitrackerdatabasebinding.folder.Folder
 import java.util.*
 
 data class Layout(
-    val id: Int,
+    override val id: Int,
     val name: String,
     val crystalreportsVersion: Int,
     val reportDataBase64: String,
@@ -18,7 +19,7 @@ data class Layout(
     val folderId: Int,
     val folder: Folder
     //private val folderMap: Lazy<Map<Int, Folder>>
-) {
+) : Entity {
 //    val folder: Folder?
 //        get() = folderMap.value[folderId]
 

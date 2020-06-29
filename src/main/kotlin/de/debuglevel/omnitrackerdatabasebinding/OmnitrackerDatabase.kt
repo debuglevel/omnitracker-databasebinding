@@ -7,7 +7,7 @@ import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import de.debuglevel.omnitrackerdatabasebinding.layout.Layout
 import de.debuglevel.omnitrackerdatabasebinding.layout.LayoutService
 import de.debuglevel.omnitrackerdatabasebinding.script.Script
-import de.debuglevel.omnitrackerdatabasebinding.script.ScriptsService
+import de.debuglevel.omnitrackerdatabasebinding.script.ScriptService
 import de.debuglevel.omnitrackerdatabasebinding.stringtranslation.StringTranslationService
 import de.debuglevel.omnitrackerdatabasebinding.webservice.WebServiceConsumerCallProfile
 import de.debuglevel.omnitrackerdatabasebinding.webservice.WebServiceConsumerCallProfileService
@@ -21,7 +21,7 @@ class OmnitrackerDatabase(
     private val fieldService: FieldService,
     private val folderService: FolderService,
     private val layoutService: LayoutService,
-    private val scriptsService: ScriptsService,
+    private val scriptService: ScriptService,
     private val stringTranslationService: StringTranslationService,
     private val webServiceConsumerCallProfileService: WebServiceConsumerCallProfileService,
     private val webServiceConsumerProfileService: WebServiceConsumerProfileService
@@ -37,7 +37,7 @@ class OmnitrackerDatabase(
 
     val fields: Map<Int, Field> by lazy {
         logger.debug("Lazy initializing fields...")
-        fieldService.getFields()
+        fieldService.getAll()
     }
 
 //    val stringTranslations: List<StringTranslation> by lazy {
@@ -47,7 +47,7 @@ class OmnitrackerDatabase(
 
     val scripts: Map<Int, Script> by lazy {
         logger.debug("Lazy initializing scripts...")
-        scriptsService.getAll()
+        scriptService.getAll()
     }
 
     val folders: Map<Int, Folder> by lazy {

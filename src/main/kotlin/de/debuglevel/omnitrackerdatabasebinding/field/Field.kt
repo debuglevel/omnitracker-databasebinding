@@ -1,7 +1,9 @@
 package de.debuglevel.omnitrackerdatabasebinding.field
 
+import de.debuglevel.omnitrackerdatabasebinding.entity.Entity
+
 data class Field(
-    val id: Int,
+    override val id: Int,
     val alias: String?,
     val label: String,
     val remark: String?,
@@ -12,7 +14,7 @@ data class Field(
     val referenceFolderId: Int?
     //private val folderMap: Lazy<Map<Int, Folder>>,
     //private val stringTranslationList: Lazy<List<StringTranslation>>
-) {
+) : Entity {
     val type: FieldType?
         get() = FieldType.values().firstOrNull { it.id == typeId }
 

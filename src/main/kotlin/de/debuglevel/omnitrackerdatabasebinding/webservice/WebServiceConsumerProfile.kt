@@ -1,12 +1,14 @@
 package de.debuglevel.omnitrackerdatabasebinding.webservice
 
+import de.debuglevel.omnitrackerdatabasebinding.entity.Entity
+
 data class WebServiceConsumerProfile(
-    val id: Int,
+    override val id: Int,
     val name: String,
     val alias: String?,
     val profileVersion: Int,
     val endpointUrl: String?
-) {
+) : Entity {
     override fun hashCode() = this.id
 
     override fun equals(other: Any?): Boolean {

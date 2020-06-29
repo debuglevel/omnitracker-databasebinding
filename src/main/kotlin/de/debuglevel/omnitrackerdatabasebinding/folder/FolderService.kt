@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.folder
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.stringtranslation.StringTranslationLanguage
 import de.debuglevel.omnitrackerdatabasebinding.stringtranslation.StringTranslationService
 import de.debuglevel.omnitrackerdatabasebinding.stringtranslation.StringTranslationType
@@ -13,48 +14,11 @@ class FolderService(
     private val databaseService: DatabaseService,
     //private val fieldService: FieldService,
     private val stringTranslationService: StringTranslationService
-) {
+) : EntityService<Folder>(databaseService) {
     private val logger = KotlinLogging.logger {}
 
-    private val query = "SELECT id, name, parent, term_singular, term_plural, alias FROM [ProblemArea]"
-
-    fun getAll(): Map<Int, Folder> {
-        logger.debug { "Getting folders..." }
-
-        val folders = databaseService.getConnection().use { connection ->
-            val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery(query)
-
-            val folders = hashMapOf<Int, Folder>()
-
-            while (resultSet.next()) {
-                val folder = build(resultSet)
-                folders[folder.id] = folder
-            }
-
-            folders
-        }
-
-        logger.debug { "Got ${folders.size} folders" }
-        return folders
-    }
-
-    fun get(id: Int): Folder? {
-        logger.debug { "Getting folder id=$id..." }
-        val folder = databaseService.getConnection().use { connection ->
-            val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery("$query WHERE id=$id")
-
-            val available = resultSet.next()
-            when {
-                available -> build(resultSet)
-                else -> null
-            }
-        }
-
-        logger.debug { "Got folder: $folder" }
-        return folder
-    }
+    override val name = "Folder"
+    override val query = "SELECT id, name, parent, term_singular, term_plural, alias FROM [ProblemArea]"
 
     private fun getName(folderId: Int, language: StringTranslationLanguage): String {
         logger.trace { "Getting folder name for folderId=$folderId ..." }
@@ -98,7 +62,7 @@ class FolderService(
         return path
     }
 
-    private fun build(resultSet: ResultSet): Folder {
+    override fun build(resultSet: ResultSet): Folder {
         logger.trace { "Building folder for ResultSet $resultSet" }
 
         val id = resultSet.getInt("id")

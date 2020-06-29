@@ -1,7 +1,9 @@
 package de.debuglevel.omnitrackerdatabasebinding.folder
 
+import de.debuglevel.omnitrackerdatabasebinding.entity.Entity
+
 data class Folder(
-    val id: Int,
+    override val id: Int,
     val name: String,
     val alias: String? = null,
     val singularTerm: String? = null,
@@ -13,7 +15,7 @@ data class Folder(
 //    private val folderMap: Lazy<Map<Int, Folder>>,
 //    private val fieldMap: Lazy<Map<Int, Field>>,
 //    private val stringTranslationList: Lazy<List<StringTranslation>>
-) {
+) : Entity {
 //    val fields: Map<Int, Field>
 //        get() = fieldMap.value.filter { it.value.folder == this }
 //

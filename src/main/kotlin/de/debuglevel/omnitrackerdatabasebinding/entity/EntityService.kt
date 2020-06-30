@@ -72,11 +72,18 @@ abstract class EntityService<T : Entity>(
             entities
         }
 
-        cache.clear()
+        clearCache()
         putCache(entities)
 
         logger.debug { "Got ${entities.size} ${name}s" }
         return entities
+    }
+
+    /**
+     * Clears the cache.
+     */
+    fun clearCache() {
+        cache.clear()
     }
 
     /**

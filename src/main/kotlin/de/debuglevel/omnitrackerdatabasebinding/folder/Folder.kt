@@ -11,7 +11,8 @@ data class Folder(
     val parentFolderId: Number,
     val parentFolder: Folder?,
     val path: String,
-    val description: String?
+    val description: String?,
+    val inheritTerms: Boolean
 //    private val folderMap: Lazy<Map<Int, Folder>>,
 //    private val fieldMap: Lazy<Map<Int, Field>>,
 //    private val stringTranslationList: Lazy<List<StringTranslation>>

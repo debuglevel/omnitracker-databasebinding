@@ -69,8 +69,15 @@ class FolderService(
         // 'name' and some other columns are CHAR instead of VARCHAR and have to be trimmed therefore.
         val name = resultSet.getString("name").trimEnd()
         val parentFolderId = resultSet.getInt("parent")
-        val singularTerm = resultSet.getString("term_singular")?.trimEnd()
-        val pluralTerm = resultSet.getString("term_plural")?.trimEnd()
+        val inheritTerms = resultSet.getBoolean("inherit_terms")
+        val singularTerm = when (inheritTerms) {
+            false -> resultSet.getString("term_singular")?.trimEnd()
+            true -> null
+        }
+        val pluralTerm = when (inheritTerms) {
+            false -> resultSet.getString("term_plural")?.trimEnd()
+            true -> null
+        }
         val alias = resultSet.getString("alias")?.trimEnd()
 
         val parentFolder = get(parentFolderId)
@@ -86,7 +93,8 @@ class FolderService(
             parentFolderId,
             parentFolder,
             path,
-            description
+            description,
+            inheritTerms
             //                    lazy { folders },
             //                    lazy { fieldService.fetchFields(folders) },
             //                    lazy { stringTranslationService.fetchStringTranslations() }

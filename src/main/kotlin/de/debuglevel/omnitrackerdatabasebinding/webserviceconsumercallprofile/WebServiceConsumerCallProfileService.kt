@@ -1,8 +1,9 @@
-package de.debuglevel.omnitrackerdatabasebinding.webservice
+package de.debuglevel.omnitrackerdatabasebinding.webserviceconsumercallprofile
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
+import de.debuglevel.omnitrackerdatabasebinding.webserviceconsumerprofile.WebServiceConsumerProfileService
 import mu.KotlinLogging
 import java.sql.ResultSet
 import javax.inject.Singleton

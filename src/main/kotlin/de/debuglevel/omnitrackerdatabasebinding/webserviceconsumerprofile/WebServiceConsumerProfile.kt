@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.webservice
+package de.debuglevel.omnitrackerdatabasebinding.webserviceconsumerprofile
 
 import de.debuglevel.omnitrackerdatabasebinding.entity.Entity
 

@@ -1,7 +1,9 @@
-package de.debuglevel.omnitrackerdatabasebinding.webservice
+package de.debuglevel.omnitrackerdatabasebinding.webserviceconsumercallprofile
 
 import de.debuglevel.omnitrackerdatabasebinding.entity.Entity
 import de.debuglevel.omnitrackerdatabasebinding.folder.Folder
+import de.debuglevel.omnitrackerdatabasebinding.webserviceconsumerprofile.WebServiceConsumerProfile
+import de.debuglevel.omnitrackerdatabasebinding.webserviceconsumerprofile.WebServiceConsumerProfileStatus
 
 data class WebServiceConsumerCallProfile(
     override val id: Int,

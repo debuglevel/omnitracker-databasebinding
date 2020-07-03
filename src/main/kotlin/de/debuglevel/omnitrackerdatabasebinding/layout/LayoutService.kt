@@ -23,7 +23,8 @@ class LayoutService(
         logger.debug { "Building layout for ResultSet $resultSet..." }
 
         val id = resultSet.getInt("id")
-        val name = resultSet.getString("name")
+        val name =
+            resultSet.getString("name").trimEnd() // has spaces at the end, as it is probably a CHAR instead of VARCHAR
         val folderId = resultSet.getInt("folder")
         val reportDataBase64 = resultSet.getString("report_data")
         val typeId = resultSet.getInt("type")

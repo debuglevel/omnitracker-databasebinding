@@ -29,13 +29,6 @@ class OmnitrackerDatabase(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    init {
-        logger.debug { "Initializing OMNITRACKER DatabaseBinding..." }
-
-        // MSSQL driver need to be loaded explicitly
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
-    }
-
     /**
      * Not really necessary. Connects for a first time, which may take a while for AccessDB (eases performance measurement).
      */

@@ -10,8 +10,8 @@ data class Layout(
     val crystalreportsVersion: Int,
     val reportDataBase64: String,
     val mailmergeSql: String?,
-    val crReplaceMdb: Int,
-    val crStaticDbConn: String?,
+    val isCrystalreportsReplaceMdb: Boolean,
+    val crystalreportsStaticDatabaseConnection: String?,
     val typeId: Int,
     val outputTypeId: Int,
     val mailmergeDoctypeId: Int,
@@ -47,8 +47,8 @@ data class Layout(
         if (name != other.name) return false
         if (crystalreportsVersion != other.crystalreportsVersion) return false
         if (mailmergeSql != other.mailmergeSql) return false
-        if (crReplaceMdb != other.crReplaceMdb) return false
-        if (crStaticDbConn != other.crStaticDbConn) return false
+        if (isCrystalreportsReplaceMdb != other.isCrystalreportsReplaceMdb) return false
+        if (crystalreportsStaticDatabaseConnection != other.crystalreportsStaticDatabaseConnection) return false
         if (typeId != other.typeId) return false
         if (outputTypeId != other.outputTypeId) return false
         if (mailmergeDoctypeId != other.mailmergeDoctypeId) return false
@@ -64,8 +64,8 @@ data class Layout(
                 "name='$name', " +
                 "crystalreportsVersion=$crystalreportsVersion, " +
                 "mailmergeSql='$mailmergeSql', " +
-                "crReplaceMdb=$crReplaceMdb, " +
-                "crStaticDbConn='$crStaticDbConn', " +
+                "crReplaceMdb=$isCrystalreportsReplaceMdb, " +
+                "crStaticDbConn='$crystalreportsStaticDatabaseConnection', " +
                 "typeId=$typeId, " +
                 "outputTypeId=$outputTypeId, " +
                 "mailmergeDoctypeId=$mailmergeDoctypeId, " +

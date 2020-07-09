@@ -45,8 +45,8 @@ class LayoutService(
         val mailmergeDoctype = resultSet.getInt("mailmerge_doctype")
         val mailmergeSql = resultSet.getString("mailmerge_sql")
         val mailmergeFiletype = resultSet.getInt("mailmerge_filetype")
-        val crReplaceMdb = resultSet.getInt("cr_replace_mdb")
-        val crStaticDbConn = resultSet.getString("cr_static_db_conn")
+        val isCrystalreportsReplaceMdb = resultSet.getBoolean("cr_replace_mdb")
+        val crystalreportsStaticDatabaseConnection = resultSet.getString("cr_static_db_conn")
 
         val folder = folderService.get(folderId)
 
@@ -56,8 +56,8 @@ class LayoutService(
             version,
             reportDataBase64,
             mailmergeSql,
-            crReplaceMdb,
-            crStaticDbConn,
+            isCrystalreportsReplaceMdb,
+            crystalreportsStaticDatabaseConnection,
             typeId,
             outputTypeId,
             mailmergeDoctype,

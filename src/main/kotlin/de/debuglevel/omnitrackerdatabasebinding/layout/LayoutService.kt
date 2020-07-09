@@ -17,7 +17,20 @@ class LayoutService(
 
     override val name = "Layout"
     override val query =
-        "SELECT id, name, folder, report_data, type, version, output_type, mailmerge_doctype, mailmerge_sql, mailmerge_filetype, cr_replace_mdb, cr_static_db_conn FROM [Layout]"
+        "SELECT " +
+                "id, " +
+                "name, " +
+                "folder, " +
+                "report_data, " +
+                "type, " +
+                "version, " +
+                "output_type, " +
+                "mailmerge_doctype, " +
+                "mailmerge_sql, " +
+                "mailmerge_filetype, " +
+                "cr_replace_mdb, " +
+                "cr_static_db_conn " +
+                " FROM [Layout]"
 
     override fun build(resultSet: ResultSet): Layout {
         logger.debug { "Building layout for ResultSet $resultSet..." }

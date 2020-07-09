@@ -12,7 +12,7 @@ data class Field(
     private val subtypeId: Int,
     val folderId: Int,
     val referenceFolderId: Int?,
-    val isIndexed: Boolean
+    val isDatabaseIndexed: Boolean
     //private val folderMap: Lazy<Map<Int, Folder>>,
     //private val stringTranslationList: Lazy<List<StringTranslation>>
 ) : Entity {

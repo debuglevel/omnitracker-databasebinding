@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class WebServiceConsumerCallProfileService(
-    private val databaseService: DatabaseService,
+    databaseService: DatabaseService,
     private val folderService: FolderService,
     private val webServiceConsumerProfileService: WebServiceConsumerProfileService
 ) : EntityService<WebServiceConsumerCallProfile>(databaseService) {

@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 class FolderService(
-    private val databaseService: DatabaseService,
+    databaseService: DatabaseService,
     //private val fieldService: FieldService,
     private val stringTranslationService: StringTranslationService
 ) : EntityService<Folder>(databaseService) {

@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ScriptService(
-    private val databaseService: DatabaseService,
+    databaseService: DatabaseService,
     private val folderService: FolderService
 ) : EntityService<Script>(databaseService) {
     private val logger = KotlinLogging.logger {}

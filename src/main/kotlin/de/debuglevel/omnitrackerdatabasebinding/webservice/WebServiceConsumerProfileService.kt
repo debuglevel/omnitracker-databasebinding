@@ -2,15 +2,13 @@ package de.debuglevel.omnitrackerdatabasebinding.webservice
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
-import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import mu.KotlinLogging
 import java.sql.ResultSet
 import javax.inject.Singleton
 
 @Singleton
 class WebServiceConsumerProfileService(
-    private val databaseService: DatabaseService,
-    private val folderService: FolderService
+    databaseService: DatabaseService
 ) : EntityService<WebServiceConsumerProfile>(databaseService) {
     private val logger = KotlinLogging.logger {}
 

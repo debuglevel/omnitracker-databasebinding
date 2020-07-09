@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 class FieldService(
-    private val databaseService: DatabaseService
+    databaseService: DatabaseService
     //private val stringTranslationService: StringTranslationService
 ) : EntityService<Field>(databaseService) {
     private val logger = KotlinLogging.logger {}

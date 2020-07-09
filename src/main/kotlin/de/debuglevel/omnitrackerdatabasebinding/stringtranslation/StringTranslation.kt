@@ -5,7 +5,7 @@ data class StringTranslation(
     val guid: String,
     val languageCode: String,
     val text: String?,
-    val untranslated: Boolean,
+    val isUntranslated: Boolean,
     val short: Boolean, // set if table is "StringTransShort"
     val typeId: Int,
     val fieldId: Int?,
@@ -38,7 +38,7 @@ data class StringTranslation(
                         this.folderId == o.folderId &&
                         this.languageCode == o.languageCode &&
                         this.text == o.text &&
-                        this.untranslated == o.untranslated &&
+                        this.isUntranslated == o.isUntranslated &&
                         this.short == o.short &&
                         this.typeId == o.typeId &&
                         this.fieldId == o.fieldId
@@ -56,7 +56,7 @@ data class StringTranslation(
                 //"folder=${folder?.alias}," +
                 "languageCode='$languageCode'," +
                 "text=$text," +
-                "untranslated=$untranslated," +
+                "untranslated=$isUntranslated," +
                 "short=$short," +
                 "type=${type?.name}," +
                 "fieldId=${fieldId}" +

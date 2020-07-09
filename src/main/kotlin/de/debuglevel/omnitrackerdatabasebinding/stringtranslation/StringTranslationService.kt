@@ -64,14 +64,14 @@ class StringTranslationService(
             short -> textRaw?.trimEnd()
             else -> textRaw
         }
-        val untranslated = resultSet.getBoolean("untranslated")
+        val isUntranslated = resultSet.getBoolean("untranslated")
 
         val stringTranslation = StringTranslation(
             id,
             guid,
             languageCode,
             text,
-            untranslated,
+            isUntranslated,
             short,
             type,
             fieldId,

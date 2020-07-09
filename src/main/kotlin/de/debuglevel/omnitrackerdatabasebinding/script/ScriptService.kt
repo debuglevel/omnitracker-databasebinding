@@ -15,7 +15,13 @@ class ScriptService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Script"
-    override val query = "SELECT id, folder, type, name, script FROM [Scripts]"
+    override val query = "SELECT " +
+            "id, " +
+            "folder, " +
+            "type, " +
+            "name, " +
+            "script " +
+            " FROM [Scripts]"
 
     override fun build(resultSet: ResultSet): Script {
         logger.debug { "Building script for ResultSet $resultSet..." }

@@ -11,7 +11,8 @@ data class Field(
     private val typeId: Int,
     private val subtypeId: Int,
     val folderId: Int,
-    val referenceFolderId: Int?
+    val referenceFolderId: Int?,
+    val isIndexed: Boolean
     //private val folderMap: Lazy<Map<Int, Folder>>,
     //private val stringTranslationList: Lazy<List<StringTranslation>>
 ) : Entity {

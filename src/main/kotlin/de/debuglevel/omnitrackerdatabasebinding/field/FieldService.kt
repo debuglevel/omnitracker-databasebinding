@@ -24,6 +24,7 @@ class FieldService(
                 "alias, " +
                 "subtype, " +
                 "max_size, " +
+                "indexDB, " +
                 "refobj_key" +
                 " FROM [UserFieldDef]"
 
@@ -38,6 +39,7 @@ class FieldService(
         val subtype = resultSet.getInt("subtype")
         val maxSize = resultSet.getInt("max_size")
         val referenceFolderId = resultSet.getInt("refobj_key")
+        val isIndexed = resultSet.getBoolean("indexDB")
 
         val field = Field(
             id,
@@ -48,7 +50,8 @@ class FieldService(
             typeId,
             subtype,
             folderId,
-            referenceFolderId
+            referenceFolderId,
+            isIndexed
             //                    lazy { folders },
             //                    lazy { stringTranslationService.fetchStringTranslations(folders, fields) }
         )

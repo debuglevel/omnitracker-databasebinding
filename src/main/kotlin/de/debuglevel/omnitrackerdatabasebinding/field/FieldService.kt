@@ -15,7 +15,17 @@ class FieldService(
 
     override val name = "Field"
     override val query =
-        "SELECT id, area, label, remark, type, alias, subtype, max_size, refobj_key FROM [UserFieldDef]"
+        "SELECT " +
+                "id, " +
+                "area, " +
+                "label, " +
+                "remark, " +
+                "type, " +
+                "alias, " +
+                "subtype, " +
+                "max_size, " +
+                "refobj_key" +
+                " FROM [UserFieldDef]"
 
     override fun build(resultSet: ResultSet): Field {
         val id = resultSet.getInt("id")

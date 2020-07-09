@@ -13,7 +13,10 @@ data class WebServiceConsumerCallProfile(
     val webServiceConsumerProfileId: Int,
     val folder: Folder?,
     val webServiceConsumerProfile: WebServiceConsumerProfile?,
-    val callAsync: Boolean
+    val callAsync: Boolean,
+    val logPath: String?,
+    val logFilePrefix: String?,
+    val logErrors: Boolean
     //private val folderMap: Lazy<Map<Int, Folder>>,
     //private val webServiceConsumerProfileMap: Lazy<Map<Int, WebServiceConsumerProfile>>
 ) : Entity {

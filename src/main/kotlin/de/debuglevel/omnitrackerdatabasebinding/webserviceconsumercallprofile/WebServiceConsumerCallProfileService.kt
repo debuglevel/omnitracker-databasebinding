@@ -1,8 +1,9 @@
-package de.debuglevel.omnitrackerdatabasebinding.webservice
+package de.debuglevel.omnitrackerdatabasebinding.webserviceconsumercallprofile
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
+import de.debuglevel.omnitrackerdatabasebinding.webserviceconsumerprofile.WebServiceConsumerProfileService
 import mu.KotlinLogging
 import java.sql.ResultSet
 import javax.inject.Singleton
@@ -53,24 +54,25 @@ class WebServiceConsumerCallProfileService(
         val folder = folderService.get(folderId)
         val webServiceConsumerProfile = webServiceConsumerProfileService.get(webServiceConsumerProfileId)
 
-        val webServiceConsumerCallProfile = WebServiceConsumerCallProfile(
-            id,
-            name,
-            alias,
-            profileVersion,
-            profileStatus,
-            folderId,
-            webServiceConsumerProfileId,
-            folder,
-            webServiceConsumerProfile,
-            isCallAsynchronous,
-            logPath,
-            logFilePrefix,
-            isLoggingErrors
+        val webServiceConsumerCallProfile =
+            WebServiceConsumerCallProfile(
+                id,
+                name,
+                alias,
+                profileVersion,
+                profileStatus,
+                folderId,
+                webServiceConsumerProfileId,
+                folder,
+                webServiceConsumerProfile,
+                isCallAsynchronous,
+                logPath,
+                logFilePrefix,
+                isLoggingErrors
 
-            //lazy { folderService.fetchFolders() },
-            //lazy { fetchWebServiceConsumerProfiles() }
-        )
+                //lazy { folderService.fetchFolders() },
+                //lazy { fetchWebServiceConsumerProfiles() }
+            )
 
         logger.debug { "Built WebServiceConsumerCallProfile: $webServiceConsumerCallProfile" }
         return webServiceConsumerCallProfile

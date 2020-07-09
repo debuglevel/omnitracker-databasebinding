@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackerdatabasebinding.webservice
+package de.debuglevel.omnitrackerdatabasebinding.webserviceconsumerprofile
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
@@ -39,13 +39,14 @@ class WebServiceConsumerProfileService(
         val profileVersion = resultSet.getInt("profile_version")
         val endpointUrl = resultSet.getString("ws_endpoint")
 
-        val webServiceConsumerProfile = WebServiceConsumerProfile(
-            id,
-            name,
-            alias,
-            profileVersion,
-            endpointUrl
-        )
+        val webServiceConsumerProfile =
+            WebServiceConsumerProfile(
+                id,
+                name,
+                alias,
+                profileVersion,
+                endpointUrl
+            )
 
         logger.debug { "Built WebServiceConsumerProfile: $webServiceConsumerProfile" }
         return webServiceConsumerProfile

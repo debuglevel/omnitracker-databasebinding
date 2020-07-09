@@ -18,7 +18,14 @@ class FolderService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Folder"
-    override val query = "SELECT id, name, parent, term_singular, term_plural, alias FROM [ProblemArea]"
+    override val query = "SELECT " +
+            "id, " +
+            "name, " +
+            "parent, " +
+            "term_singular, " +
+            "term_plural, " +
+            "alias " +
+            " FROM [ProblemArea]"
 
     private fun getName(folderId: Int, language: StringTranslationLanguage): String {
         logger.trace { "Getting folder name for folderId=$folderId ..." }

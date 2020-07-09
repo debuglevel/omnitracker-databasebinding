@@ -1,7 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.layout
 
 enum class MailmergeFiletype(val id: Int) {
-    Word(0),
+    WordOrUndefined(0),
     PDF(1),
     Type16(16),
     Type31(31),

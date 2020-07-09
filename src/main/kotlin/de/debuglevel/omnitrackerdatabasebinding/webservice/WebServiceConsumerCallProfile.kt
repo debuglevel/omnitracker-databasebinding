@@ -12,7 +12,8 @@ data class WebServiceConsumerCallProfile(
     val folderId: Int,
     val webServiceConsumerProfileId: Int,
     val folder: Folder?,
-    val webServiceConsumerProfile: WebServiceConsumerProfile?
+    val webServiceConsumerProfile: WebServiceConsumerProfile?,
+    val callAsync: Boolean
     //private val folderMap: Lazy<Map<Int, Folder>>,
     //private val webServiceConsumerProfileMap: Lazy<Map<Int, WebServiceConsumerProfile>>
 ) : Entity {

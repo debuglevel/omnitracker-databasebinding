@@ -45,6 +45,7 @@ class WebServiceConsumerCallProfileService(
         val profileStatus = resultSet.getInt("profile_status")
         val folderId = resultSet.getInt("folder_id_ot")
         val webServiceConsumerProfileId = resultSet.getInt("wsc_profile_id")
+        val callAsync = resultSet.getBoolean("call_async")
 
         val folder = folderService.get(folderId)
         val webServiceConsumerProfile = webServiceConsumerProfileService.get(webServiceConsumerProfileId)
@@ -58,7 +59,9 @@ class WebServiceConsumerCallProfileService(
             folderId,
             webServiceConsumerProfileId,
             folder,
-            webServiceConsumerProfile
+            webServiceConsumerProfile,
+            callAsync
+
             //lazy { folderService.fetchFolders() },
             //lazy { fetchWebServiceConsumerProfiles() }
         )

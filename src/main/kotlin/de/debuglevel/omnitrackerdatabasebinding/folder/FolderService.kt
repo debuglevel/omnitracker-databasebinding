@@ -80,7 +80,11 @@ class FolderService(
         val pluralTerm = resultSet.getString("term_plural")?.trimEnd()
         val alias = resultSet.getString("alias")?.trimEnd()
 
-        val parentFolder = get(parentFolderId)
+        val parentFolder = try {
+            get(parentFolderId)
+        } catch (e: EntityNotFoundException) {
+            null
+        }
         val path = buildPath(id, parentFolder)
         val description = getDescription(id, StringTranslationLanguage.German)
 

@@ -32,7 +32,11 @@ class ScriptService(
         val name = resultSet.getString("name").trimEnd()
         val content = resultSet.getString("script")
 
-        val folder = folderService.get(folderId)
+        val folder = try {
+            folderService.get(folderId)
+        } catch (e: EntityNotFoundException) {
+            null
+        }
 
         val script = Script(
             id,

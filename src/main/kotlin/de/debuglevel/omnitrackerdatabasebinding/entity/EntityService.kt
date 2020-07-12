@@ -17,7 +17,7 @@ abstract class EntityService<T : Entity>(
     private val cache: MutableMap<Int, T> = mutableMapOf<Int, T>()
 
     /**
-     * Puts an entity into the cache
+     * Puts an entity into the cache.
      */
     private fun putCache(entity: T) {
         logger.trace { "Putting id=${entity.id} into $name cache..." }
@@ -26,7 +26,7 @@ abstract class EntityService<T : Entity>(
     }
 
     /**
-     * Puts (or updates) all entities into the cache
+     * Puts (or updates) all entities into the cache.
      */
     private fun putCache(entities: Map<Int, T>) {
         val beforeCacheSize = cache.size
@@ -38,16 +38,16 @@ abstract class EntityService<T : Entity>(
     }
 
     /**
-     * Gets an entity from the cache by its id. Returns null if not present.
+     * Gets an entity from the cache by its id.
      */
-    private fun getFromCache(id: Int): T? {
+    private fun getFromCache(id: Int): T {
         logger.trace { "Getting id=${id} from $name cache..." }
-        val entity = cache[id]
-        if (entity != null) {
-            logger.trace { "Got id=${id} from $name cache" }
-        } else {
+
+        val entity = cache.getOrElse(id) {
             logger.trace { "Missed id=${id} in $name cache" }
+            throw CacheMissedException(id)
         }
+        logger.trace { "Got id=${id} from $name cache" }
 
         return entity
     }
@@ -90,17 +90,14 @@ abstract class EntityService<T : Entity>(
      * Gets an entity by its id.
      * Tries to get it from the the cache first. On cache miss, retrieve it from the database and put it into the cache.
      */
-    fun get(id: Int): T? {
+    fun get(id: Int): T {
         logger.debug { "Getting $name id=$id..." }
 
-        val cachedEntity = getFromCache(id)
-        val entity = if (cachedEntity != null) {
-            cachedEntity
-        } else {
+        val entity = try {
+            getFromCache(id)
+        } catch (e: CacheMissedException) {
             val entity = getFromDatabase(id)
-            if (entity != null) {
-                putCache(entity)
-            }
+            putCache(entity)
             entity
         }
 
@@ -109,9 +106,9 @@ abstract class EntityService<T : Entity>(
     }
 
     /**
-     * Gets an entity from the database by its id. Returns null if it does not exist.
+     * Gets an entity from the database by its id.
      */
-    private fun getFromDatabase(id: Int): T? {
+    private fun getFromDatabase(id: Int): T {
         logger.trace { "Getting $name id=$id from database..." }
 
         val entity = databaseService.getConnection().use { connection ->
@@ -121,7 +118,7 @@ abstract class EntityService<T : Entity>(
             val available = resultSet.next()
             when {
                 available -> build(resultSet)
-                else -> null
+                else -> throw EntityNotFoundException(id)
             }
         }
 
@@ -133,4 +130,7 @@ abstract class EntityService<T : Entity>(
      * Builds an entity object from the ResultSet.
      */
     protected abstract fun build(resultSet: ResultSet): T
+
+    class EntityNotFoundException(id: Int) : Exception("Entity id='$id' was not found.")
+    class CacheMissedException(id: Int) : Exception("Entity id='$id' not present in cache.")
 }

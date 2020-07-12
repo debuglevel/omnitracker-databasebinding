@@ -11,27 +11,27 @@ fun main(args: Array<String>) {
 
     println("Folders:")
     omnitrackerDatabase.folders.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
-//
-//    println("Fields:")
-//    omnitrackerDatabase.fields.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
-//
-//    //println("StringTranslations:")
-//    //omnitrackerDatabase.stringTranslations.map { it }.sortedBy { it.id }.forEach { println("\t$it") }
-//
+
+    println("Fields:")
+    omnitrackerDatabase.fields.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+
+//    println("StringTranslations:")
+//    omnitrackerDatabase.stringTranslations.map { it }.sortedBy { it.id }.forEach { println("\t$it") }
+
     println("Scripts:")
     val time = measureTimeMillis {
         omnitrackerDatabase.scripts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
     }
     println(time / 1000)
-//
-//    println("Layouts:")
-//    omnitrackerDatabase.layouts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
-//
-//    println("WSC Profiles:")
-//    omnitrackerDatabase.webServiceConsumerProfiles.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
-//
-//    println("WSC Call Profiles:")
-//    omnitrackerDatabase.webServiceConsumerCallProfiles.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+
+    println("Layouts:")
+    omnitrackerDatabase.layouts.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+
+    println("WSC Profiles:")
+    omnitrackerDatabase.webServiceConsumerProfiles.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+
+    println("WSC Call Profiles:")
+    omnitrackerDatabase.webServiceConsumerCallProfiles.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
 
     println("DatabaseViews:")
     omnitrackerDatabase.databaseViews.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }

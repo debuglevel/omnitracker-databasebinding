@@ -63,7 +63,7 @@ class LayoutService(
             mailmergeDoctype,
             mailmergeFiletype,
             folderId,
-            folder!!
+            folder
             //lazy { folderService.fetchFolders() }
         )
 

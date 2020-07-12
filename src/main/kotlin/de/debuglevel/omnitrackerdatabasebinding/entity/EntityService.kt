@@ -112,7 +112,7 @@ abstract class EntityService<T : Entity>(
      * Gets an entity from the database by its id. Returns null if it does not exist.
      */
     private fun getFromDatabase(id: Int): T? {
-        logger.debug { "Getting $name id=$id from database..." }
+        logger.trace { "Getting $name id=$id from database..." }
 
         val entity = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
@@ -125,7 +125,7 @@ abstract class EntityService<T : Entity>(
             }
         }
 
-        logger.debug { "Got $name id=$id from database..." }
+        logger.trace { "Got $name id=$id from database..." }
         return entity
     }
 

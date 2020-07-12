@@ -33,6 +33,9 @@ fun main(args: Array<String>) {
 //    println("WSC Call Profiles:")
 //    omnitrackerDatabase.webServiceConsumerCallProfiles.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
 
+    println("DatabaseViews:")
+    omnitrackerDatabase.databaseViews.map { it.value }.sortedBy { it.id }.forEach { println("\t$it") }
+
     //val omnitrackerDatabase = OmnitrackerDatabase()
     //omnitrackerDatabase.fields.map { it.value }.sortedBy { it.id }.forEach { println(it) }
     //omnitrackerDatabase.fields.filter { it.value.type==null }.map { it.value }.sortedBy { it.id }.forEach { println(it) }

@@ -1,5 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding
 
+import de.debuglevel.omnitrackerdatabasebinding.databaseview.DatabaseView
+import de.debuglevel.omnitrackerdatabasebinding.databaseview.DatabaseViewService
 import de.debuglevel.omnitrackerdatabasebinding.field.Field
 import de.debuglevel.omnitrackerdatabasebinding.field.FieldService
 import de.debuglevel.omnitrackerdatabasebinding.folder.Folder
@@ -24,6 +26,7 @@ class OmnitrackerDatabase(
     private val layoutService: LayoutService,
     private val scriptService: ScriptService,
     private val stringTranslationService: StringTranslationService,
+    private val databaseViewService: DatabaseViewService,
     private val webServiceConsumerCallProfileService: WebServiceConsumerCallProfileService,
     private val webServiceConsumerProfileService: WebServiceConsumerProfileService
 ) {
@@ -76,5 +79,10 @@ class OmnitrackerDatabase(
     val webServiceConsumerCallProfiles: Map<Int, WebServiceConsumerCallProfile> by lazy {
         logger.debug("Lazy initializing Web Service Consumer Call Profiles...")
         webServiceConsumerCallProfileService.getAll()
+    }
+
+    val databaseViews: Map<Int, DatabaseView> by lazy {
+        logger.debug("Lazy initializing Database Views...")
+        databaseViewService.getAll()
     }
 }

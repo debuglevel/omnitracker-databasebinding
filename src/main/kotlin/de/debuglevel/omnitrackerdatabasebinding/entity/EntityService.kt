@@ -56,7 +56,7 @@ abstract class EntityService<T : Entity>(
      * Gets all entities, clears the cache and puts all entities into the cache.
      */
     fun getAll(): Map<Int, T> {
-        logger.debug { "Getting ${name}s..." }
+        logger.trace { "Getting ${name}s..." }
 
         val entities = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
@@ -75,7 +75,7 @@ abstract class EntityService<T : Entity>(
         clearCache()
         putCache(entities)
 
-        logger.debug { "Got ${entities.size} ${name}s" }
+        logger.trace { "Got ${entities.size} ${name}s" }
         return entities
     }
 
@@ -91,7 +91,7 @@ abstract class EntityService<T : Entity>(
      * Tries to get it from the the cache first. On cache miss, retrieve it from the database and put it into the cache.
      */
     fun get(id: Int): T {
-        logger.debug { "Getting $name id=$id..." }
+        logger.trace { "Getting $name id=$id..." }
 
         val entity = try {
             getFromCache(id)
@@ -101,7 +101,7 @@ abstract class EntityService<T : Entity>(
             entity
         }
 
-        logger.debug { "Got ${name}: $entity" }
+        logger.trace { "Got ${name}: $entity" }
         return entity
     }
 

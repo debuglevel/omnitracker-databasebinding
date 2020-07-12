@@ -37,7 +37,7 @@ class WebServiceConsumerCallProfileService(
             "  FROM [IbWscCallProfiles]"
 
     override fun build(resultSet: ResultSet): WebServiceConsumerCallProfile {
-        logger.debug { "Building WebServiceConsumerCallProfile for ResultSet $resultSet..." }
+        logger.trace { "Building WebServiceConsumerCallProfile for ResultSet $resultSet..." }
 
         val id = resultSet.getInt("id")
         val name = resultSet.getString("name")
@@ -74,7 +74,7 @@ class WebServiceConsumerCallProfileService(
                 //lazy { fetchWebServiceConsumerProfiles() }
             )
 
-        logger.debug { "Built WebServiceConsumerCallProfile: $webServiceConsumerCallProfile" }
+        logger.trace { "Built WebServiceConsumerCallProfile: $webServiceConsumerCallProfile" }
         return webServiceConsumerCallProfile
     }
 }

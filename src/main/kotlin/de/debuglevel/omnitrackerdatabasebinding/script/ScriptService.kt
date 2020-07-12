@@ -24,7 +24,7 @@ class ScriptService(
             " FROM [Scripts]"
 
     override fun build(resultSet: ResultSet): Script {
-        logger.debug { "Building script for ResultSet $resultSet..." }
+        logger.trace { "Building script for ResultSet $resultSet..." }
 
         val id = resultSet.getInt("id")
         val folderId = resultSet.getInt("folder")
@@ -48,7 +48,7 @@ class ScriptService(
             //lazy { folderService.fetchFolders() }
         )
 
-        logger.debug { "Built script: $script" }
+        logger.trace { "Built script: $script" }
         return script
     }
 }

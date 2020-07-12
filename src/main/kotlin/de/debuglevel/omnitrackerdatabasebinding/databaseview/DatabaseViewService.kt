@@ -24,7 +24,7 @@ class DatabaseViewService(
             "  FROM [DbViewDef]"
 
     override fun build(resultSet: ResultSet): DatabaseView {
-        logger.debug { "Building DatabaseView for ResultSet $resultSet..." }
+        logger.trace { "Building DatabaseView for ResultSet $resultSet..." }
 
         val id = resultSet.getInt("id")
         val folderId = resultSet.getInt("folder")
@@ -43,7 +43,7 @@ class DatabaseViewService(
             isIncludingSubfolders
         )
 
-        logger.debug { "Built DatabaseView: $databaseView" }
+        logger.trace { "Built DatabaseView: $databaseView" }
         return databaseView
     }
 }

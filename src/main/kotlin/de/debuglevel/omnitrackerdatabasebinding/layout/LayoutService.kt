@@ -33,7 +33,7 @@ class LayoutService(
                 " FROM [Layout]"
 
     override fun build(resultSet: ResultSet): Layout {
-        logger.debug { "Building layout for ResultSet $resultSet..." }
+        logger.trace { "Building layout for ResultSet $resultSet..." }
 
         val id = resultSet.getInt("id")
         val name = resultSet.getString("name")
@@ -67,7 +67,7 @@ class LayoutService(
             //lazy { folderService.fetchFolders() }
         )
 
-        logger.debug { "Built layout: $layout" }
+        logger.trace { "Built layout: $layout" }
         return layout
     }
 

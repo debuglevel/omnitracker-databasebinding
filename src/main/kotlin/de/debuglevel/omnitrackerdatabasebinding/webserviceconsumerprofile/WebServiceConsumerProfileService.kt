@@ -31,7 +31,7 @@ class WebServiceConsumerProfileService(
             "  FROM [IbWscProfiles]"
 
     override fun build(resultSet: ResultSet): WebServiceConsumerProfile {
-        logger.debug { "Building WebServiceConsumerProfile for ResultSet $resultSet..." }
+        logger.trace { "Building WebServiceConsumerProfile for ResultSet $resultSet..." }
 
         val id = resultSet.getInt("id")
         val name = resultSet.getString("name")
@@ -48,7 +48,7 @@ class WebServiceConsumerProfileService(
                 endpointUrl
             )
 
-        logger.debug { "Built WebServiceConsumerProfile: $webServiceConsumerProfile" }
+        logger.trace { "Built WebServiceConsumerProfile: $webServiceConsumerProfile" }
         return webServiceConsumerProfile
     }
 }

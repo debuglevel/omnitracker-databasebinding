@@ -19,7 +19,7 @@ class StringTranslationService(
         connection: Connection,
         folderId: Int?
     ): MutableList<StringTranslation> {
-        logger.debug { "Getting stringTranslations (short=$short, folderId=$folderId)..." }
+        logger.trace { "Getting stringTranslations (short=$short, folderId=$folderId)..." }
 
         val table = if (short) "StringTransShort" else "StringTranslations"
         val sqlStatement = connection.createStatement()
@@ -38,7 +38,7 @@ class StringTranslationService(
             stringTranslations.add(stringTranslation)
         }
 
-        logger.debug { "Got ${stringTranslations.size} stringTranslations (short=$short, folderId=$folderId)" }
+        logger.trace { "Got ${stringTranslations.size} stringTranslations (short=$short, folderId=$folderId)" }
         return stringTranslations
     }
 
@@ -85,21 +85,21 @@ class StringTranslationService(
     }
 
     private fun fetchStringTranslations(folderId: Int? = null): List<StringTranslation> {
-        logger.debug { "Fetching stringTranslations (folderId=$folderId)..." }
+        logger.trace { "Fetching stringTranslations (folderId=$folderId)..." }
 
         val stringTranslations = databaseService.getConnection().use { connection ->
             getStringTranslations(true, connection, folderId)
                 .plus(getStringTranslations(false, connection, folderId))
         }
 
-        logger.debug { "Fetched ${stringTranslations.size} stringTranslations (folderId=$folderId)" }
+        logger.trace { "Fetched ${stringTranslations.size} stringTranslations (folderId=$folderId)" }
         return stringTranslations
     }
 
     private var cachedStringTranslations: List<StringTranslation>? = null
 
     fun getStringTranslations(folderId: Int): List<StringTranslation> {
-        logger.debug { "Getting stringTranslations (folderId=$folderId)..." }
+        logger.trace { "Getting stringTranslations (folderId=$folderId)..." }
 
         if (cachedStringTranslations == null) {
             cachedStringTranslations = fetchStringTranslations()
@@ -107,7 +107,7 @@ class StringTranslationService(
 
         val stringTranslations = cachedStringTranslations!!.filter { it.folderId == folderId }
 
-        logger.debug { "Got ${stringTranslations.size} stringTranslations (folderId=$folderId)" }
+        logger.trace { "Got ${stringTranslations.size} stringTranslations (folderId=$folderId)" }
         return stringTranslations
     }
 }

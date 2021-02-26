@@ -1,5 +1,9 @@
+# Build
 
-## Build and Publish
+## local
+`gradle publishToMavenLocal` for local development
+
+## Publish
 Developer's notes on how to publish this artifact on bintray via PowerShell:
 * do `gradle release` to do version tagging stuff
 * git checkout the new version tag

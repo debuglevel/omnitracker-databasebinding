@@ -1,11 +1,15 @@
 package de.debuglevel.omnitrackerdatabasebinding
 
+import de.debuglevel.omnitrackerdatabasebinding.autocalculation.Autocalculation
+import de.debuglevel.omnitrackerdatabasebinding.autocalculation.AutocalculationService
 import de.debuglevel.omnitrackerdatabasebinding.databaseview.DatabaseView
 import de.debuglevel.omnitrackerdatabasebinding.databaseview.DatabaseViewService
 import de.debuglevel.omnitrackerdatabasebinding.field.Field
 import de.debuglevel.omnitrackerdatabasebinding.field.FieldService
 import de.debuglevel.omnitrackerdatabasebinding.folder.Folder
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
+import de.debuglevel.omnitrackerdatabasebinding.kpi.Kpi
+import de.debuglevel.omnitrackerdatabasebinding.kpi.KpiService
 import de.debuglevel.omnitrackerdatabasebinding.layout.Layout
 import de.debuglevel.omnitrackerdatabasebinding.layout.LayoutService
 import de.debuglevel.omnitrackerdatabasebinding.script.Script
@@ -21,6 +25,8 @@ import javax.inject.Singleton
 @Singleton
 class OmnitrackerDatabase(
     private val databaseService: DatabaseService,
+    private val kpiService: KpiService,
+    private val autocalculationService: AutocalculationService,
     private val fieldService: FieldService,
     private val folderService: FolderService,
     private val layoutService: LayoutService,
@@ -55,6 +61,16 @@ class OmnitrackerDatabase(
 //        logger.debug("Lazy initializing stringTranslations...")
 //        stringTranslationService.getStringTranslations()
 //    }
+
+    val autocalculations: Map<Int, Autocalculation> by lazy {
+        logger.debug("Lazy initializing AutoCalculations...")
+        autocalculationService.getAll()
+    }
+
+    val kpis: Map<Int, Kpi> by lazy {
+        logger.debug("Lazy initializing KPIs...")
+        kpiService.getAll()
+    }
 
     val scripts: Map<Int, Script> by lazy {
         logger.debug("Lazy initializing scripts...")

@@ -22,7 +22,8 @@ abstract class EntityService<T : Entity>(
     protected abstract val table: String
 
     /**
-     * Columns in the table with their type to map to
+     * Columns in the table
+     * Note: ColumnType is unused right now and unclear whether it can be used.
      */
     protected abstract val columns: Map<String, ColumnType>
 

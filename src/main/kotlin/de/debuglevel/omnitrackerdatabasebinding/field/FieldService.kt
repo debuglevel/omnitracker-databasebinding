@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.field
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.ColumnType
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import mu.KotlinLogging
 import java.sql.ResultSet
@@ -14,19 +15,19 @@ class FieldService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Field"
-    override val getAllQuery =
-        "SELECT " +
-                "id, " +
-                "area, " +
-                "label, " +
-                "remark, " +
-                "type, " +
-                "alias, " +
-                "subtype, " +
-                "max_size, " +
-                "indexDB, " +
-                "refobj_key" +
-                " FROM [UserFieldDef]"
+    override val table = "UserFieldDef"
+    override val columns = mapOf(
+        "id" to ColumnType.Integer,
+        "area" to ColumnType.Integer,
+        "label" to ColumnType.String,
+        "remark" to ColumnType.String,
+        "type" to ColumnType.Integer,
+        "alias" to ColumnType.String,
+        "subtype" to ColumnType.Integer,
+        "max_size" to ColumnType.Integer,
+        "refobj_key" to ColumnType.Integer,
+        "indexDB" to ColumnType.Integer
+    )
 
     override fun build(resultSet: ResultSet): Field {
         val id = resultSet.getInt("id")

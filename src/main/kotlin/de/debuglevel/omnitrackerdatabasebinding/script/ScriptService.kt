@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.script
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.ColumnType
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import mu.KotlinLogging
@@ -15,13 +16,14 @@ class ScriptService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Script"
-    override val getAllQuery = "SELECT " +
-            "id, " +
-            "folder, " +
-            "type, " +
-            "name, " +
-            "script " +
-            " FROM [Scripts]"
+    override val table = "Scripts"
+    override val columns = mapOf(
+        "id" to ColumnType.Integer,
+        "folder" to ColumnType.Integer,
+        "type" to ColumnType.Integer,
+        "name" to ColumnType.String,
+        "script" to ColumnType.String
+    )
 
     override fun build(resultSet: ResultSet): Script {
         logger.trace { "Building script for ResultSet $resultSet..." }

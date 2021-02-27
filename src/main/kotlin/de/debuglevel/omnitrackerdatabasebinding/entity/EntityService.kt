@@ -13,8 +13,28 @@ abstract class EntityService<T : Entity>(
      * Human-readable name of the entity
      */
     protected abstract val name: String
-    protected abstract val getAllQuery: String
     private val cache: MutableMap<Int, T> = mutableMapOf<Int, T>()
+
+    /**
+     * Table in the database
+     */
+    protected abstract val table: String
+
+    /**
+     * Columns in the table with their type to map to
+     */
+    protected abstract val columns: Map<String, ColumnType>
+
+    protected val getAllQuery: String
+        get() {
+            logger.trace { "Building getAllQuery for $name..." }
+            val columnList = columns.keys
+                .map { "[$it]" }
+                .joinToString(",")
+            val query = "SELECT $columnList FROM [$table]"
+            logger.trace { "Built getAllQuery for $name: $query" }
+            return query
+        }
 
     /**
      * Puts an entity into the cache.

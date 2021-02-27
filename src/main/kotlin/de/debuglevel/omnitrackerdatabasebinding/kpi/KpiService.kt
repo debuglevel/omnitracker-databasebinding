@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.kpi
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.ColumnType
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import mu.KotlinLogging
@@ -15,27 +16,27 @@ class KpiService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "KPI"
-    override val getAllQuery =
-        "SELECT " +
-                "id, " +
-                "folder, " +
-                "name, " +
-                "alias, " +
-                "measure_method, " +
-                "recursive, " +
-                "group_field, " +
-                "script, " +
-                "max_history, " +
-                "trend_count, " +
-                "trend_units, " +
-                "trend_reference, " +
-                "active, " +
-                "kpi_event, " +
-                "aggregate_period, " +
-                "aggregate_unit, " +
-                "aggregation_type, " +
-                "bpmn_kpi_unit " +
-                " FROM [KpiDef]"
+    override val table = "KpiDef"
+    override val columns = mapOf(
+        "id" to ColumnType.Integer,
+        "folder" to ColumnType.Integer,
+        "name" to ColumnType.String,
+        "alias" to ColumnType.String,
+        "measure_method" to ColumnType.Integer,
+        "recursive" to ColumnType.Boolean,
+        "group_field" to ColumnType.Integer,
+        "script" to ColumnType.Integer,
+        "max_history" to ColumnType.Integer,
+        "trend_count" to ColumnType.Integer,
+        "trend_units" to ColumnType.Integer,
+        "trend_reference" to ColumnType.Integer,
+        "active" to ColumnType.Boolean,
+        "kpi_event" to ColumnType.Integer,
+        "aggregate_period" to ColumnType.Integer,
+        "aggregate_unit" to ColumnType.Integer,
+        "aggregation_type" to ColumnType.Integer,
+        "bpmn_kpi_unit" to ColumnType.Integer
+    )
 
     override fun build(resultSet: ResultSet): Kpi {
         logger.trace { "Building kpi for ResultSet $resultSet..." }

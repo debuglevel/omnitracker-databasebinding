@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.autocalculation
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.ColumnType
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.field.FieldService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
@@ -19,18 +20,18 @@ class AutocalculationService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "AutoCalculation"
-    override val getAllQuery =
-        "SELECT " +
-                "id, " +
-                "name, " +
-                "type, " +
-                "folder, " +
-                "ref_field, " +
-                "script, " +
-                "mod_obj_flags, " +
-                "recalc_after_move, " +
-                "store_zero " +
-                " FROM [SummaryDef]"
+    override val table = "SummaryDef"
+    override val columns = mapOf(
+        "id" to ColumnType.Integer,
+        "name" to ColumnType.String,
+        "type" to ColumnType.Integer,
+        "folder" to ColumnType.Integer,
+        "ref_field" to ColumnType.Integer,
+        "script" to ColumnType.Integer,
+        "mod_obj_flags" to ColumnType.Integer,
+        "recalc_after_move" to ColumnType.Integer,
+        "store_zero" to ColumnType.Integer
+    )
 
     override fun build(resultSet: ResultSet): Autocalculation {
         logger.trace { "Building Autocalculation for ResultSet $resultSet..." }

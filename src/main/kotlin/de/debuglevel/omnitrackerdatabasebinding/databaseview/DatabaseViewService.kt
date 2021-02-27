@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.databaseview
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.ColumnType
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import mu.KotlinLogging
@@ -15,13 +16,15 @@ class DatabaseViewService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Database View"
-    override val getAllQuery = "SELECT [id]\n" +
-            "      ,[folder]\n" +
-            "      ,[view_name_db]\n" +
-            "      ,[type]\n" +
-            "      ,[assoc_field]\n" +
-            "      ,[include_subfolders]\n" +
-            "  FROM [DbViewDef]"
+    override val table = "DbViewDef"
+    override val columns = mapOf(
+        "id" to ColumnType.Integer,
+        "folder" to ColumnType.Integer,
+        "view_name_db" to ColumnType.String,
+        "type" to ColumnType.Integer,
+        "assoc_field" to ColumnType.Integer,
+        "include_subfolders" to ColumnType.Boolean
+    )
 
     override fun build(resultSet: ResultSet): DatabaseView {
         logger.trace { "Building DatabaseView for ResultSet $resultSet..." }

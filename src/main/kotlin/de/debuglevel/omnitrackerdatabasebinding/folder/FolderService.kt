@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.folder
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.ColumnType
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.stringtranslation.StringTranslationLanguage
 import de.debuglevel.omnitrackerdatabasebinding.stringtranslation.StringTranslationService
@@ -18,14 +19,15 @@ class FolderService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Folder"
-    override val getAllQuery = "SELECT " +
-            "id, " +
-            "name, " +
-            "parent, " +
-            "term_singular, " +
-            "term_plural, " +
-            "alias " +
-            " FROM [ProblemArea]"
+    override val table = "ProblemArea"
+    override val columns = mapOf(
+        "id" to ColumnType.Integer,
+        "name" to ColumnType.String,
+        "parent" to ColumnType.Integer,
+        "term_singular" to ColumnType.String,
+        "term_plural" to ColumnType.String,
+        "alias" to ColumnType.String
+    )
 
     private fun getName(folderId: Int, language: StringTranslationLanguage): String {
         logger.trace { "Getting folder name for folderId=$folderId ..." }

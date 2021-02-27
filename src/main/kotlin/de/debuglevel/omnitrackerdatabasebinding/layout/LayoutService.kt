@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.layout
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.ColumnType
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import mu.KotlinLogging
@@ -16,21 +17,21 @@ class LayoutService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Layout"
-    override val getAllQuery =
-        "SELECT " +
-                "id, " +
-                "name, " +
-                "folder, " +
-                "report_data, " +
-                "type, " +
-                "version, " +
-                "output_type, " +
-                "mailmerge_doctype, " +
-                "mailmerge_sql, " +
-                "mailmerge_filetype, " +
-                "cr_replace_mdb, " +
-                "cr_static_db_conn " +
-                " FROM [Layout]"
+    override val table = "Layout"
+    override val columns = mapOf(
+        "id" to ColumnType.Integer,
+        "name" to ColumnType.String,
+        "folder" to ColumnType.Integer,
+        "report_data" to ColumnType.String,
+        "type" to ColumnType.Integer,
+        "version" to ColumnType.Integer,
+        "output_type" to ColumnType.Integer,
+        "mailmerge_doctype" to ColumnType.Integer,
+        "mailmerge_sql" to ColumnType.String,
+        "mailmerge_filetype" to ColumnType.Integer,
+        "cr_replace_mdb" to ColumnType.Boolean,
+        "cr_static_db_conn" to ColumnType.Integer
+    )
 
     override fun build(resultSet: ResultSet): Layout {
         logger.trace { "Building layout for ResultSet $resultSet..." }

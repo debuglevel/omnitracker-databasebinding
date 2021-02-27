@@ -1,6 +1,7 @@
 package de.debuglevel.omnitrackerdatabasebinding.webserviceconsumercallprofile
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.ColumnType
 import de.debuglevel.omnitrackerdatabasebinding.entity.EntityService
 import de.debuglevel.omnitrackerdatabasebinding.folder.FolderService
 import de.debuglevel.omnitrackerdatabasebinding.webserviceconsumerprofile.WebServiceConsumerProfileService
@@ -17,24 +18,26 @@ class WebServiceConsumerCallProfileService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "WebService Consumer Call Profile"
-    override val getAllQuery = "SELECT [id]\n" +
-            "      ,[name]\n" +
-            "      ,[alias]\n" +
-            "      ,[user_]\n" +
-            "      ,[profile_version]\n" +
-            "      ,[profile_status]\n" +
-            "      ,[folder_id_ot]\n" +
-            "      ,[wsc_profile_id]\n" +
-            "      ,[wsc_operation]\n" +
-            "      ,[log_errors]\n" +
-            "      ,[logfile_prefix]\n" +
-            "      ,[logpath]\n" +
-            "      ,[binding_settings]\n" +
-            "      ,[in_param_script]\n" +
-            "      ,[out_param_script]\n" +
-            "      ,[last_change]\n" +
-            "      ,[call_async]\n" +
-            "  FROM [IbWscCallProfiles]"
+    override val table = "IbWscCallProfiles"
+    override val columns = mapOf(
+        "name" to ColumnType.String,
+        "alias" to ColumnType.String,
+        "user_" to ColumnType.Integer,
+        "profile_version" to ColumnType.Integer,
+        "profile_status" to ColumnType.Integer,
+        "folder_id_ot" to ColumnType.Integer,
+        "wsc_profile_id" to ColumnType.Integer,
+        "wsc_operation" to ColumnType.Integer,
+        "log_errors" to ColumnType.Boolean,
+        "logfile_prefix" to ColumnType.String,
+        "logpath" to ColumnType.String,
+        "binding_settings" to ColumnType.Integer,
+        "binding_settings" to ColumnType.Integer,
+        "in_param_script" to ColumnType.Integer,
+        "out_param_script" to ColumnType.Integer,
+        "last_change" to ColumnType.Integer,
+        "call_async" to ColumnType.Boolean
+    )
 
     override fun build(resultSet: ResultSet): WebServiceConsumerCallProfile {
         logger.trace { "Building WebServiceConsumerCallProfile for ResultSet $resultSet..." }

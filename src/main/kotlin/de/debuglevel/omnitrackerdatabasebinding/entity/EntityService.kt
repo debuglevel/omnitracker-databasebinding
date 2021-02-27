@@ -3,6 +3,7 @@ package de.debuglevel.omnitrackerdatabasebinding.entity
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
 import mu.KotlinLogging
 import java.sql.ResultSet
+import javax.inject.Inject
 
 abstract class EntityService<T : Entity>(
     private val databaseService: DatabaseService
@@ -25,13 +26,13 @@ abstract class EntityService<T : Entity>(
      */
     protected abstract val columns: Map<String, ColumnType>
 
+    @Inject
+    lateinit var sqlBuilderService: SqlBuilderService
+
     protected val getAllQuery: String
         get() {
             logger.trace { "Building getAllQuery for $name..." }
-            val columnList = columns.keys
-                .map { "[$it]" }
-                .joinToString(",")
-            val query = "SELECT $columnList FROM [$table]"
+            val query = sqlBuilderService.buildSelectAllQuery(table, columns)
             logger.trace { "Built getAllQuery for $name: $query" }
             return query
         }

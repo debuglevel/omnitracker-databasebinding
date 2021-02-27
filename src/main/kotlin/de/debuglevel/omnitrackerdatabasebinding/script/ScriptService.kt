@@ -15,7 +15,7 @@ class ScriptService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Script"
-    override val query = "SELECT " +
+    override val getAllQuery = "SELECT " +
             "id, " +
             "folder, " +
             "type, " +

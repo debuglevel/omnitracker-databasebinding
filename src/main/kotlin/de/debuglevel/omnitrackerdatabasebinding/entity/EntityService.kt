@@ -13,7 +13,7 @@ abstract class EntityService<T : Entity>(
      * Human-readable name of the entity
      */
     protected abstract val name: String
-    protected abstract val query: String
+    protected abstract val getAllQuery: String
     private val cache: MutableMap<Int, T> = mutableMapOf<Int, T>()
 
     /**
@@ -60,7 +60,7 @@ abstract class EntityService<T : Entity>(
 
         val entities = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery(query)
+            val resultSet = sqlStatement.executeQuery(getAllQuery)
 
             val entities = hashMapOf<Int, T>()
 
@@ -113,7 +113,7 @@ abstract class EntityService<T : Entity>(
 
         val entity = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery("$query WHERE id=$id")
+            val resultSet = sqlStatement.executeQuery("$getAllQuery WHERE id=$id")
 
             val available = resultSet.next()
             when {

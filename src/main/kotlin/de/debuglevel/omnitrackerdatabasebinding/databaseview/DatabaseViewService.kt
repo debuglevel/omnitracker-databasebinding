@@ -15,7 +15,7 @@ class DatabaseViewService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Database View"
-    override val query = "SELECT [id]\n" +
+    override val getAllQuery = "SELECT [id]\n" +
             "      ,[folder]\n" +
             "      ,[view_name_db]\n" +
             "      ,[type]\n" +

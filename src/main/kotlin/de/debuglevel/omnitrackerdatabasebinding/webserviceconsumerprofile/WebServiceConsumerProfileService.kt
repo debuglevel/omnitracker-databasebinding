@@ -13,7 +13,7 @@ class WebServiceConsumerProfileService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "WebService Consumer Profile"
-    override val query = "SELECT [id]\n" +
+    override val getAllQuery = "SELECT [id]\n" +
             "      ,[name]\n" +
             "      ,[alias]\n" +
             "      ,[user_]\n" +

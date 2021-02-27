@@ -14,7 +14,7 @@ class FieldService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Field"
-    override val query =
+    override val getAllQuery =
         "SELECT " +
                 "id, " +
                 "area, " +

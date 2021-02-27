@@ -19,7 +19,7 @@ class AutocalculationService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "AutoCalculation"
-    override val query =
+    override val getAllQuery =
         "SELECT " +
                 "id, " +
                 "name, " +

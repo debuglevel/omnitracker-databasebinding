@@ -15,7 +15,7 @@ class KpiService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "KPI"
-    override val query =
+    override val getAllQuery =
         "SELECT " +
                 "id, " +
                 "folder, " +

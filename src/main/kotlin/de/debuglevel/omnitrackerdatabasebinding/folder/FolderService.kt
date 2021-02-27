@@ -18,7 +18,7 @@ class FolderService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Folder"
-    override val query = "SELECT " +
+    override val getAllQuery = "SELECT " +
             "id, " +
             "name, " +
             "parent, " +

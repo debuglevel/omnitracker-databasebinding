@@ -16,7 +16,7 @@ class LayoutService(
     private val logger = KotlinLogging.logger {}
 
     override val name = "Layout"
-    override val query =
+    override val getAllQuery =
         "SELECT " +
                 "id, " +
                 "name, " +

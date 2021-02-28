@@ -39,6 +39,17 @@ abstract class EntityService<T : Entity>(
             return query
         }
 
+    protected fun getOneQuery(id: String): String {
+        logger.trace { "Building getOneQuery for $name..." }
+        val query = sqlBuilderService.buildSelectOneQuery(table, columns, "id", id)
+        logger.trace { "Built getOneQuery for $name: $query" }
+        return query
+    }
+
+    protected fun getOneQuery(id: Int): String {
+        return getOneQuery(id.toString())
+    }
+
     /**
      * Gets all entities, clears the cache and puts all entities into the cache.
      */
@@ -100,7 +111,7 @@ abstract class EntityService<T : Entity>(
 
         val entity = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery("$getAllQuery WHERE id=$id")
+            val resultSet = sqlStatement.executeQuery(getOneQuery(id))
 
             val available = resultSet.next()
             when {

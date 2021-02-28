@@ -8,10 +8,10 @@ class SqlBuilderService {
     private val logger = KotlinLogging.logger {}
 
     fun buildSelectAllQuery(table: String, columns: Map<String, ColumnType>): String {
-        logger.trace { "Building getAllQuery for table $table..." }
+        logger.trace { "Building select-all-query for table $table..." }
         val columnList = columns.keys.joinToString(",") { "[$it]" }
         val query = "SELECT $columnList FROM [$table]"
-        logger.trace { "Built getAllQuery for table $table: $query" }
+        logger.trace { "Built select-all-query for table $table: $query" }
         return query
     }
 

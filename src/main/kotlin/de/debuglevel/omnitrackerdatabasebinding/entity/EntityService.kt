@@ -14,7 +14,6 @@ abstract class EntityService<T : Entity>(
      * Human-readable name of the entity
      */
     protected abstract val name: String
-    private val cache: MutableMap<Int, T> = mutableMapOf<Int, T>()
 
     /**
      * Table in the database
@@ -30,6 +29,8 @@ abstract class EntityService<T : Entity>(
     @Inject
     lateinit var sqlBuilderService: SqlBuilderService
 
+    private val cache = Cache<T>()
+
     protected val getAllQuery: String
         get() {
             logger.trace { "Building getAllQuery for $name..." }
@@ -37,42 +38,6 @@ abstract class EntityService<T : Entity>(
             logger.trace { "Built getAllQuery for $name: $query" }
             return query
         }
-
-    /**
-     * Puts an entity into the cache.
-     */
-    private fun putCache(entity: T) {
-        logger.trace { "Putting id=${entity.id} into $name cache..." }
-        cache[entity.id] = entity
-        logger.trace { "Put id=${entity.id} into $name cache (size: ${cache.size}" }
-    }
-
-    /**
-     * Puts (or updates) all entities into the cache.
-     */
-    private fun putCache(entities: Map<Int, T>) {
-        val beforeCacheSize = cache.size
-        logger.trace { "Putting ${entities.size} ${name}s into $name cache (size: $beforeCacheSize..." }
-        cache.putAll(entities)
-        val afterCacheSize = cache.size
-        val differenceSize = afterCacheSize - beforeCacheSize
-        logger.trace { "Put $differenceSize ${name}s $name cache (size: $afterCacheSize" }
-    }
-
-    /**
-     * Gets an entity from the cache by its id.
-     */
-    private fun getFromCache(id: Int): T {
-        logger.trace { "Getting id=${id} from $name cache..." }
-
-        val entity = cache.getOrElse(id) {
-            logger.trace { "Missed id=${id} in $name cache" }
-            throw CacheMissedException(id)
-        }
-        logger.trace { "Got id=${id} from $name cache" }
-
-        return entity
-    }
 
     /**
      * Gets all entities, clears the cache and puts all entities into the cache.
@@ -94,8 +59,8 @@ abstract class EntityService<T : Entity>(
             entities
         }
 
-        clearCache()
-        putCache(entities)
+        cache.clearCache()
+        cache.putCache(entities)
 
         logger.trace { "Got ${entities.size} ${name}s" }
         return entities
@@ -105,7 +70,7 @@ abstract class EntityService<T : Entity>(
      * Clears the cache.
      */
     fun clearCache() {
-        cache.clear()
+        cache.clearCache()
     }
 
     /**
@@ -116,10 +81,10 @@ abstract class EntityService<T : Entity>(
         logger.trace { "Getting $name id=$id..." }
 
         val entity = try {
-            getFromCache(id)
-        } catch (e: CacheMissedException) {
+            cache.getFromCache(id)
+        } catch (e: Cache.CacheMissedException) {
             val entity = getFromDatabase(id)
-            putCache(entity)
+            cache.putCache(entity)
             entity
         }
 
@@ -154,5 +119,4 @@ abstract class EntityService<T : Entity>(
     protected abstract fun build(resultSet: ResultSet): T
 
     class EntityNotFoundException(id: Int) : Exception("Entity id='$id' was not found.")
-    class CacheMissedException(id: Int) : Exception("Entity id='$id' not present in cache.")
 }

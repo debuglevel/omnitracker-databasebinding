@@ -28,7 +28,7 @@ class SqlBuilderService {
         return when (databaseType) {
             DatabaseType.MSSQL -> "["
             DatabaseType.Access -> "["
-            DatabaseType.PostgreSQL -> "'"
+            DatabaseType.PostgreSQL -> "\""
             else -> "`"
         }
     }
@@ -37,7 +37,7 @@ class SqlBuilderService {
         return when (databaseType) {
             DatabaseType.MSSQL -> "]"
             DatabaseType.Access -> "]"
-            DatabaseType.PostgreSQL -> "'"
+            DatabaseType.PostgreSQL -> "\""
             else -> "`"
         }
     }

@@ -2,6 +2,7 @@ package de.debuglevel.omnitrackerdatabasebinding.entity
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
 import mu.KotlinLogging
+import java.sql.Connection
 import java.sql.ResultSet
 import javax.inject.Inject
 
@@ -31,23 +32,24 @@ abstract class EntityService<T : Entity>(
 
     private val cache = Cache<T>()
 
-    protected val getAllQuery: String
-        get() {
-            logger.trace { "Building getAllQuery for $name..." }
-            val query = sqlBuilderService.buildSelectAllQuery(table, columns)
-            logger.trace { "Built getAllQuery for $name: $query" }
-            return query
-        }
+    protected fun getGetAllQuery(connection: Connection): String {
+        logger.trace { "Building getAllQuery for $name..." }
+        val databaseType = sqlBuilderService.getDatabaseType(connection)
+        val query = sqlBuilderService.buildSelectAllQuery(databaseType, table, columns)
+        logger.trace { "Built getAllQuery for $name: $query" }
+        return query
+    }
 
-    protected fun getOneQuery(id: String): String {
+    protected fun getOneQuery(connection: Connection, id: String): String {
         logger.trace { "Building getOneQuery for $name..." }
-        val query = sqlBuilderService.buildSelectOneQuery(table, columns, "id", id)
+        val databaseType = sqlBuilderService.getDatabaseType(connection)
+        val query = sqlBuilderService.buildSelectOneQuery(databaseType, table, columns, "id", id)
         logger.trace { "Built getOneQuery for $name: $query" }
         return query
     }
 
-    protected fun getOneQuery(id: Int): String {
-        return getOneQuery(id.toString())
+    protected fun getOneQuery(connection: Connection, id: Int): String {
+        return getOneQuery(connection, id.toString())
     }
 
     /**
@@ -58,7 +60,7 @@ abstract class EntityService<T : Entity>(
 
         val entities = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery(getAllQuery)
+            val resultSet = sqlStatement.executeQuery(getGetAllQuery(connection))
 
             val entities = hashMapOf<Int, T>()
 
@@ -111,7 +113,7 @@ abstract class EntityService<T : Entity>(
 
         val entity = databaseService.getConnection().use { connection ->
             val sqlStatement = connection.createStatement()
-            val resultSet = sqlStatement.executeQuery(getOneQuery(id))
+            val resultSet = sqlStatement.executeQuery(getOneQuery(connection, id))
 
             val available = resultSet.next()
             when {

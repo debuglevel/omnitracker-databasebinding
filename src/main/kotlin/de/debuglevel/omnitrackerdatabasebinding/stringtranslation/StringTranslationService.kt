@@ -1,6 +1,8 @@
 package de.debuglevel.omnitrackerdatabasebinding.stringtranslation
 
 import de.debuglevel.omnitrackerdatabasebinding.DatabaseService
+import de.debuglevel.omnitrackerdatabasebinding.entity.ColumnType
+import de.debuglevel.omnitrackerdatabasebinding.entity.SqlBuilderService
 import mu.KotlinLogging
 import java.sql.Connection
 import java.sql.ResultSet
@@ -8,11 +10,24 @@ import javax.inject.Singleton
 
 @Singleton
 class StringTranslationService(
-    private val databaseService: DatabaseService
+    private val databaseService: DatabaseService,
+    private val sqlBuilderService: SqlBuilderService
     //private val folderService: FolderService,
     //private val fieldService: FieldService
 ) {
     private val logger = KotlinLogging.logger {}
+
+    val columns = mapOf(
+        "id" to ColumnType.Integer,
+        "str_guid" to ColumnType.String,
+        "type" to ColumnType.Integer,
+        "ref" to ColumnType.Integer,
+        "field" to ColumnType.Integer,
+        "folder" to ColumnType.Integer,
+        "langcode" to ColumnType.String,
+        "txt" to ColumnType.String,
+        "untranslated" to ColumnType.Boolean
+    )
 
     private fun getStringTranslations(
         short: Boolean,
@@ -22,13 +37,12 @@ class StringTranslationService(
         logger.trace { "Getting stringTranslations (short=$short, folderId=$folderId)..." }
 
         val table = if (short) "StringTransShort" else "StringTranslations"
+        val databaseType = sqlBuilderService.getDatabaseType(connection)
+        val stringTranslationQuery = when (folderId) {
+            null -> sqlBuilderService.buildSelectAllQuery(databaseType, table, columns)
+            else -> sqlBuilderService.buildSelectOneQuery(databaseType, table, columns, "folder", folderId)
+        }
         val sqlStatement = connection.createStatement()
-        val stringTranslationQuery =
-            if (folderId == null) {
-                "SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [$table]"
-            } else {
-                "SELECT id, str_guid, type, ref, field, folder, langcode, txt, untranslated FROM [$table] WHERE folder=$folderId"
-            }
         val resultSet = sqlStatement.executeQuery(stringTranslationQuery)
 
         val stringTranslations = mutableListOf<StringTranslation>()

@@ -63,6 +63,16 @@ class SqlBuilderService {
         table: String,
         columns: Map<String, ColumnType>,
         idColumn: String,
+        id: Int
+    ): String {
+        return buildSelectOneQuery(databaseType, table, columns, idColumn, id.toString())
+    }
+
+    fun buildSelectOneQuery(
+        databaseType: DatabaseType,
+        table: String,
+        columns: Map<String, ColumnType>,
+        idColumn: String,
         id: String
     ): String {
         logger.trace { "Building select-one-query for table $table..." }

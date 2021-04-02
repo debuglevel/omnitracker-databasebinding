@@ -42,9 +42,6 @@ plugins {
 
     // add no-argument constructors as they are needed for JPA (see https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support)
     id "org.jetbrains.kotlin.plugin.jpa"
-
-    // Publish library at JFrog BinTray
-    id "com.jfrog.bintray" version "1.8.1"
 }
 // Enhance Hibernate entities (see configuration block below)
 // TODO: move to plugins block when https://hibernate.atlassian.net/browse/HHH-13354 is resolved
@@ -236,19 +233,5 @@ dependencyUpdates.resolutionStrategy {
 //            artifact sourcesJar
 //            artifact javadocJar
 //        }
-//    }
-//}
-
-//bintray {
-//    user = System.getenv('BINTRAY_USER')
-//    key = System.getenv('BINTRAY_API_KEY')
-//    publications = ['javaMaven']
-//    publish = true
-//    override = true
-//    pkg {
-//        repo = 'maven'
-//        name = 'omnitrackerdatabasebinding'
-//        licenses = ['MIT']
-//        vcsUrl = 'https://github.com/debuglevel/omnitrackerdatabasebinding.git'
 //    }
 //}

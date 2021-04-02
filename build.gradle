@@ -60,6 +60,13 @@ repositories {
 //    }
 }
 
+ext {
+    _group = applicationGroup
+    _module = applicationModule
+//    _mainClass = _group + "." + _module + ".Application"
+//    _title = applicationTitle
+}
+
 dependencies {
     // If no specific version is given, it is usually provided by the Micronaut BOM
 

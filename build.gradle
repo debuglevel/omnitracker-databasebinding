@@ -54,7 +54,7 @@ apply plugin: "java-library"
 apply plugin: 'org.jetbrains.dokka'
 
 repositories {
-    jcenter()
+    mavenCentral()
 //    mavenLocal()
 //    maven {
 //        url "https://jitpack.io"

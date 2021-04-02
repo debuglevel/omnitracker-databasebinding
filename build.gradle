@@ -9,6 +9,7 @@ buildscript {
 
         classpath "org.hibernate:hibernate-gradle-plugin:$hibernateGradlePluginVersion"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.13.0'
     }
 }
 
@@ -50,6 +51,7 @@ plugins {
 apply plugin: 'org.hibernate.orm'
 
 apply plugin: "maven-publish"
+apply plugin: 'com.vanniktech.maven.publish'
 apply plugin: "java-library"
 apply plugin: 'org.jetbrains.dokka'
 
@@ -186,47 +188,47 @@ dependencyUpdates.resolutionStrategy {
     }
 }
 
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/javadoc"
-}
+//dokka {
+//    outputFormat = 'html'
+//    outputDirectory = "$buildDir/javadoc"
+//}
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier 'sources'
-}
+//task sourcesJar(type: Jar) {
+//    from sourceSets.main.allSource
+//    classifier 'sources'
+//}
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = 'javadoc'
-    outputDirectory = javadoc.destinationDir
-    inputs.dir 'src/main/kotlin'
-}
+//task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+//    outputFormat = 'javadoc'
+//    outputDirectory = javadoc.destinationDir
+//    inputs.dir 'src/main/kotlin'
+//}
+//
+//task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+//publishing {
+//    publications {
+//        javaMaven(MavenPublication) {
+//            from components.java
+//            artifact sourcesJar
+//            artifact javadocJar
+//        }
+//    }
+//}
 
-task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-publishing {
-    publications {
-        javaMaven(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
-        }
-    }
-}
-
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_API_KEY')
-    publications = ['javaMaven']
-    publish = true
-    override = true
-    pkg {
-        repo = 'maven'
-        name = 'omnitrackerdatabasebinding'
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/debuglevel/omnitrackerdatabasebinding.git'
-    }
-}
+//bintray {
+//    user = System.getenv('BINTRAY_USER')
+//    key = System.getenv('BINTRAY_API_KEY')
+//    publications = ['javaMaven']
+//    publish = true
+//    override = true
+//    pkg {
+//        repo = 'maven'
+//        name = 'omnitrackerdatabasebinding'
+//        licenses = ['MIT']
+//        vcsUrl = 'https://github.com/debuglevel/omnitrackerdatabasebinding.git'
+//    }
+//}

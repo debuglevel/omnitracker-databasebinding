@@ -19,6 +19,7 @@ Developer's notes on how to publish this artifact to Maven Central via Bash/Powe
     * Go to https://s01.oss.sonatype.org -> "Staging Repositories"
         * "Close"
         * "Release"
+        * TODO: try https://github.com/vanniktech/gradle-maven-publish-plugin#releasing
 
 * On Maven Central:
     * -SNAPSHOT releases do not require signing.
